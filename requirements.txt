@@ -1,0 +1,40 @@
+# 舞蹈动作解析系统
+# 依赖列表 v1.0
+#
+# 安装全部依赖：
+#   pip install -r requirements.txt
+#
+# 仅安装核心依赖（不含 AI / C3D 功能）：
+#   pip install flask mediapipe opencv-python numpy
+# ─────────────────────────────────────────────────────────────
+
+# ── 核心依赖（必须安装，缺少任何一项程序无法启动） ─────────────
+
+# Web 服务框架
+flask>=3.0
+
+# 姿态检测（Tasks API，需 0.10.0+；旧版 solutions API 已废弃）
+mediapipe>=0.10.14
+
+# 图像处理与视频解码
+opencv-python>=4.8
+
+# 数值计算（DTW、时序分析、角度计算）
+numpy>=1.24
+
+
+# ── AI 建议功能（强烈推荐，至少安装其中之一） ──────────────────
+
+# Claude（Anthropic）
+anthropic>=0.25
+
+# OpenAI 兼容接口（同时支持 OpenAI / DeepSeek / 通义千问 / 豆包 / Ollama）
+# 必须 >=1.0，旧版不支持 base_url 参数
+openai>=1.0
+
+
+# ── C3D 动捕文件读取（可选，使用 C3D 输入源时需要） ───────────
+
+# 读取专业动捕 .c3d 文件（Vicon PiG、C3D Generic 等格式）
+# 如未安装，程序会提供一键安装按钮
+ezc3d>=1.5
