@@ -8,6 +8,7 @@ from datetime import datetime
 from typing import Optional, Dict, List, Tuple
 import cv2, numpy as np, mediapipe as mp
 warnings.filterwarnings("ignore")
+from PIL import Image, ImageDraw, ImageFont
 
 try:    import anthropic as _anthropic_mod;  HAS_ANTHROPIC = True
 except: HAS_ANTHROPIC = False
@@ -80,6 +81,34 @@ PRESET_MAPS = {
         "right_ankle":    {"markers":["R.Knee","R.Ankle","R.Toe"],"cn_name":"右踝"},
         "left_wrist":     {"markers":["L.Elbow","L.Wrist","L.Finger"],"cn_name":"左腕"},
         "right_wrist":    {"markers":["R.Elbow","R.Wrist","R.Finger"],"cn_name":"右腕"},
+    },
+    # ═══════════════════════════════════════════════════════════
+    #  适配学校实验室自定义标记点命名
+    # ═══════════════════════════════════════════════════════════
+    "custom_mocap": {
+        # 肘关节：上臂标记 - 肘外侧 - 腕外侧（计算肘屈伸）
+        "left_elbow":     {"markers":["LArm","LElbowOut","LWristOut"], "cn_name":"左肘"},
+        "right_elbow":    {"markers":["RArm","RElbowOut","RWristOut"], "cn_name":"右肘"},
+        
+        # 肩关节：肘外侧 - 肩峰 - 胸骨（计算肩外展/前屈）
+        "left_shoulder":  {"markers":["LElbowOut","LShoulder","Chest"], "cn_name":"左肩"},
+        "right_shoulder": {"markers":["RElbowOut","RShoulder","Chest"], "cn_name":"右肩"},
+        
+        # 髋关节：肩峰 - 髂前上棘(ASIS) - 大腿标记（近似髋部角度）
+        "left_hip":       {"markers":["LShoulder","LASIS","LTHI"], "cn_name":"左髋"},
+        "right_hip":      {"markers":["RShoulder","RASIS","RTHI"], "cn_name":"右髋"},
+        
+        # 膝关节：大腿 - 膝外侧 - 小腿（计算膝屈伸）
+        "left_knee":      {"markers":["LTHI","LlatKnee","LShank"], "cn_name":"左膝"},
+        "right_knee":     {"markers":["RTHI","RlatKnee","RShank"], "cn_name":"右膝"},
+        
+        # 踝关节：小腿 - 踝外侧 - 足趾（计算踝背屈/跖屈）
+        "left_ankle":     {"markers":["LShank","LAnkleOut","LToe"], "cn_name":"左踝"},
+        "right_ankle":    {"markers":["RShank","RAnkleOut","RToe"], "cn_name":"右踝"},
+        
+        # 腕关节（可选）：肘 - 腕外侧 - 手背（近似腕关节角度）
+        "left_wrist":     {"markers":["LElbowOut","LWristOut","LHand"], "cn_name":"左腕"},
+        "right_wrist":    {"markers":["REIbowOut","RWristOut","RHand"], "cn_name":"右腕"},
     },
 }
 
@@ -642,16 +671,15 @@ def make_placeholder(w=480, h=360, text="等待开始...", side="") -> np.ndarra
 
     BG_DEEP  = (26, 14, 8)     # #080e1a  深海军蓝
     BG_CARD  = (53, 22, 13)    # #0d1626
-    GRID_CLR = (64, 46, 23)    # 点阵网格颜色
+    GRID_CLR = (64, 46, 23)    
 
     img = np.full((h, w, 3), BG_DEEP, np.uint8)
 
-    # ── 点阵网格背景 ────────────────────────────────────────────
+    # 点阵网格背景
     for x in range(0, w, 28):
         for y in range(0, h, 28):
             cv2.circle(img, (x, y), 1, GRID_CLR, -1, cv2.LINE_AA)
 
-    # ── 骨架背后的径向光晕 ──────────────────────────────────────
     cx, cy = w // 2, int(h * 0.40)
     glow_r = int(min(w, h) * 0.38)
     for r in range(glow_r, 0, -4):
@@ -663,9 +691,8 @@ def make_placeholder(w=480, h=360, text="等待开始...", side="") -> np.ndarra
         )
         cv2.circle(img, (cx, cy), r, col, 2, cv2.LINE_AA)
 
-    # ── 骨架轮廓 ────────────────────────────────────────────────
+    # 骨架轮廓
     scale = min(w, h) / 480.0
-
     def pt(dx, dy):
         return (int(cx + dx * scale), int(cy + dy * scale))
 
@@ -678,7 +705,6 @@ def make_placeholder(w=480, h=360, text="等待开始...", side="") -> np.ndarra
     lkne   = pt(-34, 110); rkne = pt(34, 110)
     lank   = pt(-32, 168); rank = pt(32, 168)
 
-    # 暗色肢体线
     lw = max(2, int(2.2 * scale))
     DIM = tuple(int(c * 0.35) for c in accent)
 
@@ -693,9 +719,8 @@ def make_placeholder(w=480, h=360, text="等待开始...", side="") -> np.ndarra
     for a, b in bones:
         cv2.line(img, a, b, DIM, lw, cv2.LINE_AA)
 
-    # 绘制头部圆形
     cv2.circle(img, head_c, head_r, DIM, lw, cv2.LINE_AA)
-
+    
     # 关节点
     joints_pts = [neck, lsho, rsho, lelb, relb, lwri, rwri,
                   lhip, rhip, lkne, rkne, lank, rank]
@@ -705,59 +730,131 @@ def make_placeholder(w=480, h=360, text="等待开始...", side="") -> np.ndarra
         cv2.circle(img, jp, jr + 2, tuple(int(c * 0.15) for c in accent), -1, cv2.LINE_AA)
         cv2.circle(img, jp, jr, DIM2, -1, cv2.LINE_AA)
 
-    # ── 侧边 A/B 徽章 ──────────────────────────────────────────
-    badge = f"侧 {side}" if side else ""
-    if badge:
-        bx, by = 12, 12; bw2, bh2 = 46, 22
-        overlay = img.copy()
-        cv2.rectangle(overlay, (bx, by), (bx+bw2, by+bh2),
-                      tuple(int(c * 0.18) for c in accent), -1)
-        cv2.addWeighted(overlay, 0.75, img, 0.25, 0, img)
-        cv2.rectangle(img, (bx, by), (bx+bw2, by+bh2), accent, 1, cv2.LINE_AA)
-        cv2.putText(img, badge, (bx+6, by+15),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.46, accent, 1, cv2.LINE_AA)
+    # PIL 绘制中文文字（OpenCV 本地字体支持有限，使用 PIL 绘制后再转换回 OpenCV 格式）
+    # 将 OpenCV 图像 (BGR) 转换为 PIL 图像 (RGB)
+    pil_img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    draw = ImageDraw.Draw(pil_img)
+    
+    # ── 字体加载策略（跨平台兼容）─────────────────────────────
+    font = None
+    font_paths = [
+        # Windows 系统字体
+        "C:/Windows/Fonts/simhei.ttf",      # 黑体（最常用）
+        "C:/Windows/Fonts/msyh.ttc",        # 微软雅黑
+        "C:/Windows/Fonts/simsun.ttc",      # 宋体
+        # macOS 系统字体
+        "/System/Library/Fonts/PingFang.ttc", # 苹方（简体中文）
+        "/System/Library/Fonts/STHeiti Light.ttc", # 黑体
+        "/Library/Fonts/Arial Unicode.ttf", 
+        # Linux 系统字体
+        "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc", # 文泉驿正黑
+        "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc",
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+    ]
+    
+    for fp in font_paths:
+        try:
+            # 尝试加载 18px 字号（可根据需要调整）
+            font = ImageFont.truetype(fp, 18)
+            break
+        except:
+            continue
+    
+    # 如果所有系统字体都失败，使用默认字体（可能不支持中文，但不会崩溃）
+    if font is None:
+        font = ImageFont.load_default()
+        print(f"[WARN] 未找到中文字体，使用默认字体（可能显示为方框）")
 
-    # ── 操作引导文字 ───────────────────────────────────────────
-    stopped = "已停止" in text
-    line1 = "分析已停止" if stopped else "点击开始分析"
-    line2 = "重新开始"   if stopped else "以显示实时动作"
+    # ── 文字内容准备 ───────────────────────────────────────────
+    stopped = "已停止" in text or "stopped" in text.lower()
+    
+    # 主标题（侧 A / 侧 B 徽章文字）
+    badge_text = f"侧 {side}" if side else ""
+    
+    # 中央操作提示（两行）
+    if stopped:
+        main_line = "分析已停止"
+        sub_line = "点击重新开始"
+    else:
+        main_line = "点击开始分析"
+        sub_line = "以显示实时动作"
+    
+    # ── 绘制徽章文字（左上角）──────────────────────────────────
+    if badge_text:
+        bx, by = 12, 12
+        # 计算文字尺寸以确定背景框大小
+        bbox = draw.textbbox((0, 0), badge_text, font=font)
+        text_w = bbox[2] - bbox[0]
+        text_h = bbox[3] - bbox[1]
+        padding = 6
+        
+        # 绘制半透明背景胶囊
+        overlay = Image.new('RGBA', pil_img.size, (0, 0, 0, 0))
+        overlay_draw = ImageDraw.Draw(overlay)
+        overlay_draw.rounded_rectangle(
+            [bx, by, bx + text_w + padding*2, by + text_h + padding*2],
+            radius=4,
+            fill=(int(accent[0]*0.2), int(accent[1]*0.2), int(accent[2]*0.2), 180)
+        )
+        # 混合图层
+        pil_img = Image.alpha_composite(pil_img.convert('RGBA'), overlay).convert('RGB')
+        draw = ImageDraw.Draw(pil_img)
+        
+        # 绘制文字（使用 RGB 元组，注意 PIL 使用 RGB 而非 BGR）
+        pil_accent = (accent[2], accent[1], accent[0])  # BGR -> RGB 转换
+        draw.text((bx + padding, by + padding//2), badge_text, font=font, fill=pil_accent)
 
-    # 文字底部胶囊背景
-    pill_w, pill_h = int(w * 0.52), 46
+    # ── 绘制中央提示文字（底部胶囊区域）────────────────────────
+    # 计算文字尺寸
+    bbox_main = draw.textbbox((0, 0), main_line, font=font)
+    bbox_sub = draw.textbbox((0, 0), sub_line, font=font)
+    max_w = max(bbox_main[2], bbox_sub[2])
+    total_h = (bbox_main[3] - bbox_main[1]) + (bbox_sub[3] - bbox_sub[1]) + 8
+    
+    pill_w = int(max_w * 1.2)  # 增加边距
+    pill_h = int(total_h * 1.5)
     pill_x = (w - pill_w) // 2
     pill_y = int(h * 0.72)
-    overlay2 = img.copy()
-    cv2.rectangle(overlay2, (pill_x, pill_y), (pill_x+pill_w, pill_y+pill_h),
-                  (45, 30, 18), -1)
-    cv2.addWeighted(overlay2, 0.55, img, 0.45, 0, img)
-    cv2.rectangle(img, (pill_x, pill_y), (pill_x+pill_w, pill_y+pill_h),
-                  tuple(int(c * 0.45) for c in accent), 1, cv2.LINE_AA)
+    
+    # 绘制胶囊背景（带透明度）
+    overlay = Image.new('RGBA', pil_img.size, (0, 0, 0, 0))
+    overlay_draw = ImageDraw.Draw(overlay)
+    overlay_draw.rounded_rectangle(
+        [pill_x, pill_y, pill_x + pill_w, pill_y + pill_h],
+        radius=12,
+        fill=(45, 30, 18, 200),  # 半透明深色背景
+        outline=(int(accent[2]*0.6), int(accent[1]*0.6), int(accent[0]*0.6), 255),
+        width=1
+    )
+    pil_img = Image.alpha_composite(pil_img.convert('RGBA'), overlay).convert('RGB')
+    draw = ImageDraw.Draw(pil_img)
+    
+    # 绘制主文字（白色）
+    main_x = (w - (bbox_main[2] - bbox_main[0])) // 2
+    main_y = pill_y + 10
+    draw.text((main_x, main_y), main_line, font=font, fill=(255, 255, 255))
+    
+    # 绘制副文字（半透明强调色）
+    sub_color = (int(accent[2]*0.8), int(accent[1]*0.8), int(accent[0]*0.8))
+    sub_x = (w - (bbox_sub[2] - bbox_sub[0])) // 2
+    sub_y = main_y + (bbox_main[3] - bbox_main[1]) + 6
+    draw.text((sub_x, sub_y), sub_line, font=font, fill=sub_color)
+    
 
-    (tw1, th1), _ = cv2.getTextSize(line1, cv2.FONT_HERSHEY_SIMPLEX, 0.54, 1)
-    cv2.putText(img, line1,
-                ((w - tw1)//2, pill_y + 20),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.54, accent, 1, cv2.LINE_AA)
-
-    (tw2, th2), _ = cv2.getTextSize(line2, cv2.FONT_HERSHEY_SIMPLEX, 0.40, 1)
-    cv2.putText(img, line2,
-                ((w - tw2)//2, pill_y + 38),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.40,
-                tuple(int(c * 0.65) for c in accent), 1, cv2.LINE_AA)
-
-    # ── 底部渐变高光条 ─────────────────────────────────────────
+    # 底部渐变高光条
     bar_h = 3
     for i in range(w):
         t = i / w
-        r = int(CYAN[0] + (VIOLET[0] - CYAN[0]) * t) if not is_b else \
-            int(VIOLET[0] + (CYAN[0] - VIOLET[0]) * t)
-        g = int(CYAN[1] + (VIOLET[1] - CYAN[1]) * t) if not is_b else \
-            int(VIOLET[1] + (CYAN[1] - VIOLET[1]) * t)
-        b2 = int(CYAN[2] + (VIOLET[2] - CYAN[2]) * t) if not is_b else \
-             int(VIOLET[2] + (CYAN[2] - VIOLET[2]) * t)
-        cv2.line(img, (i, h-bar_h), (i, h-1), (r, g, b2), 1)
+        # 注意：OpenCV 是 BGR，但这里用 RGB 插值后再转回
+        r = int(CYAN[2] + (VIOLET[2] - CYAN[2]) * t) if not is_b else int(VIOLET[2] + (CYAN[2] - VIOLET[2]) * t)
+        g = int(CYAN[1] + (VIOLET[1] - CYAN[1]) * t) if not is_b else int(VIOLET[1] + (CYAN[1] - VIOLET[1]) * t)
+        b = int(CYAN[0] + (VIOLET[0] - CYAN[0]) * t) if not is_b else int(VIOLET[0] + (CYAN[0] - VIOLET[0]) * t)
+        cv2.line(img, (i, h-bar_h), (i, h-1), (b, g, r), 1)  # RGB -> BGR 转换
 
+    # 将 PIL 图像转回 OpenCV 格式
+    img = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+    
     return img
-
 
 def draw_skeleton(frame, landmarks, angles, comparison, w, h):
     """绘制骨架和关节角度中文显示"""
