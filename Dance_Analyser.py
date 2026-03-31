@@ -707,22 +707,98 @@ def make_placeholder(w=480, h=360, text="等待开始...", side="") -> np.ndarra
 
 
 def draw_skeleton(frame, landmarks, angles, comparison, w, h):
-    lm=landmarks
-    pts=[(int(lm[i].x*w),int(lm[i].y*h)) for i in range(len(lm))]
-    for a,b in POSE_CONNECTIONS:
-        if a<len(pts) and b<len(pts):
-            cv2.line(frame,pts[a],pts[b],(255,178,56),2,cv2.LINE_AA)
-    for pt in pts: cv2.circle(frame,pt,3,(52,211,153),-1)
-    for key,info in angles.items():
-        b_idx=MP_JOINT_DEF[key][1]; bx,by=pts[b_idx]
-        if comparison and key in comparison.get("joints",{}):
-            cmp=comparison["joints"][key]; color=GRADE_BGR[cmp["grade"]]
-            label=f"{info['cn_name']}:{info['angle']:.0f}({cmp['deviation']:+.0f})"
-        else:
-            color=(0,200,200); label=f"{info['cn_name']}:{info['angle']:.0f}"
-        (tw,th),_=cv2.getTextSize(label,cv2.FONT_HERSHEY_SIMPLEX,0.38,1)
-        cv2.rectangle(frame,(bx-2,by-th-4),(bx+tw+2,by+2),(8,12,20),-1)
-        cv2.putText(frame,label,(bx,by-2),cv2.FONT_HERSHEY_SIMPLEX,0.38,color,1,cv2.LINE_AA)
+    """绘制骨架和关节角度中文显示"""
+    lm = landmarks
+    pts = [(int(lm[i].x * w), int(lm[i].y * h)) for i in range(len(lm))]
+    
+    #骨架连接线这一块
+    for a, b in POSE_CONNECTIONS:
+        if a < len(pts) and b < len(pts):
+            cv2.line(frame, pts[a], pts[b], (56, 189, 248), 2, cv2.LINE_AA)  # 青色 #38bdf8
+    
+    # 关节点这一块
+    for pt in pts:
+        cv2.circle(frame, pt, 4, (74, 222, 128), -1)  # 绿色关节点
+    
+    # 用PIL绘制中文文本
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+        import numpy as np
+        
+        # OpenCV图像转换为PIL图像
+        pil_img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        draw = ImageDraw.Draw(pil_img)
+        
+        try:
+            # 优先使用系统中文字体
+            font_paths = [
+                "/System/Library/Fonts/PingFang.ttc",  # macOS
+                "/System/Library/Fonts/STHeiti Light.ttc",  # macOS备选
+                "C:/Windows/Fonts/simhei.ttf",  # Windows黑体
+                "C:/Windows/Fonts/simsun.ttc",  # Windows宋体
+                "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",  # Linux
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",  # Linux备选
+            ]
+            font = None
+            for fp in font_paths:
+                try:
+                    font = ImageFont.truetype(fp, 16)
+                    break
+                except:
+                    continue
+            if font is None:
+                font = ImageFont.load_default()
+        except:
+            font = ImageFont.load_default()
+        
+        for key, info in angles.items():
+            b_idx = MP_JOINT_DEF[key][1]
+            bx, by = pts[b_idx]
+            
+            if comparison and key in comparison.get("joints", {}):
+                cmp = comparison["joints"][key]
+                # 英文冒号
+                label = f"{info['cn_name']}: {info['angle']:.0f} ({cmp['deviation']:+.0f})"
+                color = (74, 222, 128) if cmp['grade'] == 'excellent' else \
+                        (56, 189, 248) if cmp['grade'] == 'good' else \
+                        (251, 191, 36) if cmp['grade'] == 'warning' else \
+                        (248, 113, 113)
+            else:
+                label = f"{info['cn_name']}: {info['angle']:.0f}"
+                color = (56, 189, 248)
+            
+            # 算文本尺寸
+            bbox = draw.textbbox((0, 0), label, font=font)
+            text_w = bbox[2] - bbox[0]
+            text_h = bbox[3] - bbox[1]
+            
+            # 背景框
+            bg_x1 = max(0, bx - 2)
+            bg_y1 = max(0, by - text_h - 6)
+            bg_x2 = min(w, bx + text_w + 4)
+            bg_y2 = min(h, by)
+            
+            draw.rectangle([bg_x1, bg_y1, bg_x2, bg_y2], 
+                          fill=(11, 17, 32, 200),  
+                          outline=tuple(color) + (255,))
+            
+            draw.text((bx, by - text_h - 3), label, font=font, fill=color)
+        
+        # 转换回OpenCV格式
+        frame[:] = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+        
+    except ImportError:
+        # 如果没有PIL就用OpenCV绘制英文标签
+        for key, info in angles.items():
+            b_idx = MP_JOINT_DEF[key][1]
+            bx, by = pts[b_idx]
+            label = f"{key}: {info['angle']:.0f}"
+            (tw, th), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+            cv2.rectangle(frame, (bx-2, by-th-4), (bx+tw+2, by+2), (8, 12, 20), -1)
+            cv2.putText(frame, label, (bx, by-2), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 200, 200), 1, cv2.LINE_AA)
+    except Exception as e:
+        # 出错时不绘制标签，免得崩溃
+        pass
 
 # ══════════════════════════════════════════════════════════════
 #  SideState — 单侧状态

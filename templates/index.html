@@ -1,27 +1,48 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>舞蹈动作分析系统</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 <div id="app">
 
+<!-- SVG Gradients -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#a78bfa" />
+    </linearGradient>
+  </defs>
+</svg>
+
 <!-- HEADER -->
 <header>
-  <div class="logo"><em>💃🏻舞蹈动作分析系统v3.0</em><span> &nbsp;</span></div>
+  <div class="logo">舞蹈动作分析系统</div>
+  
   <div class="hdr-status">
-    <div class="side-pill" id="pill-a"><div class="dot" id="dot-a"></div><span id="lbl-a">侧A — 就绪</span></div>
-    <div class="side-pill" id="pill-b"><div class="dot" id="dot-b"></div><span id="lbl-b">侧B — 就绪</span></div>
+    <div class="side-pill a" id="pill-a">
+      <div class="dot" id="dot-a"></div>
+      <span id="lbl-a">侧A — 就绪</span>
+    </div>
+    <div class="side-pill b" id="pill-b">
+      <div class="dot" id="dot-b"></div>
+      <span id="lbl-b">侧B — 就绪</span>
+    </div>
   </div>
-  <div style="display:flex;gap:0;border:1px solid var(--border-hi);border-radius:7px;overflow:hidden">
-    <button class="nav-tab active" id="nav-compare" onclick="showTab('compare')">◈ 双人对比</button>
-    <button class="nav-tab" id="nav-analysis" onclick="showTab('analysis')">∿ 时序分析</button>
+
+  <div style="display:flex;gap:12px;align-items:center;">
+    <div class="nav-tabs">
+      <button class="nav-tab active" id="nav-compare" onclick="showTab('compare')">◈ 双人对比</button>
+      <button class="nav-tab" id="nav-analysis" onclick="showTab('analysis')">∿ 时序分析</button>
+    </div>
+    <button class="btn btn-ghost" onclick="exportReport()">📊 导出</button>
   </div>
-  <button class="btn btn-ghost" style="font-size:.72rem;padding:4px 10px;" onclick="exportReport()">📊 导出报告</button>
 </header>
 
 <div id="compare-page">
@@ -29,28 +50,36 @@
 
 <!-- ══ SIDE A ══ -->
 <div class="side-panel a" id="panel-a">
-  <div class="side-label a">▶ 侧 A &nbsp;<span style="font-weight:400;opacity:.6">被分析舞者</span></div>
+  <div class="side-label a">
+    <span>▶ 侧 A</span>
+    <span style="font-weight:400;opacity:.6;font-size:0.7rem">被分析舞者</span>
+  </div>
 
   <div class="vid-wrap">
     <img id="feed-a" src="/feed_a" alt="侧A视频">
     <div class="no-detect" id="nd-a">⚠ 未检测到人体</div>
   </div>
 
-  <!-- Source tabs -->
   <div class="src-ctrl">
     <div class="tab-row">
       <button class="tab-btn active" id="ta-cam" onclick="setSrc('a','camera')">📷 摄像头</button>
       <button class="tab-btn" id="ta-vid" onclick="setSrc('a','video')">🎬 视频</button>
       <button class="tab-btn" id="ta-c3d" onclick="setSrc('a','c3d')">🦴 C3D</button>
     </div>
+    
     <div class="ctrl-row" id="a-cam-opts">
-      <select id="a-cam-idx"><option value="0">摄像头 0</option><option value="1">摄像头 1</option></select>
+      <select id="a-cam-idx" style="flex:1">
+        <option value="0">摄像头 0</option>
+        <option value="1">摄像头 1</option>
+      </select>
     </div>
-    <div class="ctrl-row" id="a-vid-opts" style="display:none">
-      <label class="upload-lbl" for="a-vid-file">📂 选择视频</label>
-      <input type="file" id="a-vid-file" accept=".mp4,.avi,.mov,.mkv,.webm" onchange="uploadVideo('a',this)">
-      <span id="a-vid-name" style="font-size:.7rem;color:var(--muted)"></span>
-    </div>
+    
+<div class="ctrl-row" id="a-vid-opts" style="display:none; align-items: center;">
+  <label class="upload-lbl" for="a-vid-file">📂 选择视频文件</label>
+  <input type="file" id="a-vid-file" accept=".mp4,.avi,.mov,.mkv,.webm" onchange="uploadVideo('a',this)" style="display:none; visibility:hidden; opacity:0; position:absolute; z-index:-1;">
+  <span id="a-vid-name" style="font-size:0.8rem;color:var(--text-muted);flex:1;word-break:break-all;margin-left:8px;"></span>
+</div>
+    
     <div id="a-c3d-opts" style="display:none">
       <div class="c3d-zone" id="a-c3d-zone"
         onclick="document.getElementById('a-c3d-file').click()"
@@ -58,41 +87,52 @@
         ondragleave="this.classList.remove('over')"
         ondrop="dropC3D(event,'a')">
         📁 拖拽或点击上传 .c3d 文件
-        <input type="file" id="a-c3d-file" accept=".c3d" onchange="uploadC3D('a',this.files[0])">
+        <input type="file" id="a-c3d-file" accept=".c3d" onchange="uploadC3D('a',this.files[0])" style="display:none">
       </div>
-      <div style="padding:0 12px 6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        <select id="a-c3d-preset" style="font-size:.72rem"><option value="vicon_pig">Vicon PiG</option><option value="c3d_generic">通用C3D</option></select>
-        <button class="btn btn-ghost" style="font-size:.7rem;padding:3px 8px" onclick="toggleCustomMap('a')">自定义...</button>
-        <button class="btn btn-stop" style="font-size:.7rem;padding:3px 8px" id="a-c3d-clear" onclick="clearC3D('a')" disabled>清除</button>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <select id="a-c3d-preset" style="flex:1;font-size:0.8rem">
+          <option value="vicon_pig">Vicon PiG</option>
+          <option value="c3d_generic">通用C3D</option>
+        </select>
+        <button class="btn btn-ghost" style="font-size:0.75rem;padding:6px 12px" onclick="toggleCustomMap('a')">自定义</button>
+        <button class="btn btn-stop" style="font-size:0.75rem;padding:6px 12px" id="a-c3d-clear" onclick="clearC3D('a')" disabled>清除</button>
       </div>
-      <textarea id="a-custom-map" rows="2" style="display:none;width:calc(100% - 24px);margin:0 12px 6px;
-        background:var(--bg0);border:1px solid var(--border-hi);border-radius:5px;color:var(--text);
-        padding:5px;font-size:.68rem;font-family:var(--mono);resize:vertical"
+      <textarea id="a-custom-map" rows="2" style="display:none;width:100%;margin-top:8px;background:rgba(15,23,42,0.6);border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-primary);padding:8px;font-size:0.75rem;font-family:var(--mono);resize:vertical"
         placeholder='{"left_knee":{"markers":["LHIP","LKNE","LANK"],"cn_name":"左膝"},...}'></textarea>
-      <div class="c3d-ok" id="a-c3d-ok"></div>
-      <div class="c3d-err" id="a-c3d-err"></div>
+      <div class="c3d-ok" id="a-c3d-ok" style="display:none;margin-top:8px;padding:10px;border-radius:8px;font-size:0.8rem;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:var(--green)"></div>
+      <div class="c3d-err" id="a-c3d-err" style="display:none;margin-top:8px;padding:10px;border-radius:8px;font-size:0.8rem;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:var(--red)"></div>
     </div>
-    <!-- 数据槽控制 -->
-    <div class="ctrl-row" id="a-data-row">
-      <button class="btn btn-a"    id="a-load"   onclick="loadData('a')"  >📥 装载数据</button>
-      <button class="btn btn-stop" id="a-unload" onclick="unloadData('a')" style="display:none">🗑 卸载</button>
+
+    <div class="ctrl-row" id="a-data-row" style="margin-top:4px">
+      <button class="btn btn-a" id="a-load" onclick="loadData('a')" style="flex:1;justify-content:center">📥 装载数据</button>
+      <button class="btn btn-stop" id="a-unload" onclick="unloadData('a')" style="display:none;flex:1;justify-content:center">🗑 卸载</button>
     </div>
-    <!-- 分析控制（仅装载后显示） -->
-    <div class="ctrl-row" id="a-run-row" style="display:none">
-      <button class="btn btn-a"    id="a-start"  onclick="startSide('a')">▶ 开始分析</button>
-      <button class="btn btn-stop" id="a-stop"   onclick="stopSide('a')"  style="display:none">⏹ 停止</button>
+    
+    <div class="ctrl-row" id="a-run-row" style="display:none;margin-top:8px">
+      <button class="btn btn-a" id="a-start" onclick="startSide('a')" style="flex:1;justify-content:center">▶ 开始分析</button>
+      <button class="btn btn-stop" id="a-stop" onclick="stopSide('a')" style="display:none;flex:1;justify-content:center">⏹ 停止</button>
     </div>
-    <!-- 数据摘要（装载后显示） -->
-    <div id="a-data-info" style="display:none;padding:4px 12px 0;font-size:.68rem;color:var(--muted)">
-      <span id="a-frame-count">0</span> 帧已记录
-      &nbsp;·&nbsp;
-      <span id="a-data-dur">0.0</span>s
+
+    <div id="a-data-info" style="display:none;margin-top:12px">
+      <div class="data-stats">
+        <div class="stat-card">
+          <div class="stat-label">总帧数</div>
+          <div class="stat-value" id="a-frame-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">时长</div>
+          <div class="stat-value" id="a-data-dur">0.0s</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">FPS</div>
+          <div class="stat-value" id="a-fps">30</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Joint mini bars -->
   <div class="joint-mini" id="a-joints">
-    <div style="color:var(--muted);font-size:.74rem;text-align:center;padding:16px 0">等待检测...</div>
+    <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0">等待检测...</div>
   </div>
 </div>
 
@@ -100,77 +140,91 @@
 <div class="cmp-panel">
 
   <!-- AI Settings -->
-  <div class="ai-settings">
-    <div class="sec-title" style="margin-bottom:7px">AI 设置</div>
+  <div class="glass-card ai-settings">
+    <div class="section-title">AI 设置</div>
     <div class="prov-row" id="prov-row">
-      <button class="pbtn" id="pb-anthropic" onclick="setProv('anthropic')">Claude</button>
-      <button class="pbtn" id="pb-deepseek"  onclick="setProv('deepseek')">DeepSeek</button>
-      <button class="pbtn" id="pb-openai"    onclick="setProv('openai')">OpenAI</button>
-      <button class="pbtn" id="pb-qwen"      onclick="setProv('qwen')">千问</button>
-      <button class="pbtn" id="pb-doubao"    onclick="setProv('doubao')">豆包</button>
-      <button class="pbtn" id="pb-ollama"    onclick="setProv('ollama')">Ollama</button>
+      <button class="pbtn active" id="pb-anthropic" onclick="setProv('anthropic')">Claude</button>
+      <button class="pbtn" id="pb-deepseek" onclick="setProv('deepseek')">DeepSeek</button>
+      <button class="pbtn" id="pb-openai" onclick="setProv('openai')">OpenAI</button>
+      <button class="pbtn" id="pb-qwen" onclick="setProv('qwen')">千问</button>
+      <button class="pbtn" id="pb-doubao" onclick="setProv('doubao')">豆包</button>
+      <button class="pbtn" id="pb-ollama" onclick="setProv('ollama')">Ollama</button>
     </div>
-    <div class="ai-row">
-      <label>Key</label>
-      <input type="password" class="api-inp" id="api-key-inp" placeholder="粘贴 API Key..." oninput="debounceAI()">
+    <div class="ctrl-row" style="margin-bottom:8px">
+      <label style="color:var(--text-muted);font-size:0.8rem;width:40px">Key</label>
+      <input type="password" class="api-inp" id="api-key-inp" placeholder="粘贴 API Key..." oninput="debounceAI()" style="flex:1">
     </div>
-    <div class="ai-row">
-      <label>模型</label>
-      <input type="text" class="api-inp" id="model-inp" placeholder="留空=默认" oninput="debounceAI()">
+    <div class="ctrl-row" style="margin-bottom:8px">
+      <label style="color:var(--text-muted);font-size:0.8rem;width:40px">模型</label>
+      <input type="text" class="api-inp" id="model-inp" placeholder="留空=默认" oninput="debounceAI()" style="flex:1">
     </div>
-    <div class="ai-row" id="url-row" style="display:none">
-      <label>地址</label>
-      <input type="text" class="api-inp" id="url-inp" placeholder="http://..." oninput="debounceAI()">
+    <div class="ctrl-row" id="url-row" style="display:none;margin-bottom:8px">
+      <label style="color:var(--text-muted);font-size:0.8rem;width:40px">地址</label>
+      <input type="text" class="api-inp" id="url-inp" placeholder="http://..." oninput="debounceAI()" style="flex:1">
     </div>
-    <div class="prov-hint" id="prov-hint"></div>
+    <div class="prov-hint" id="prov-hint" style="font-size:0.75rem;color:var(--text-muted)"></div>
   </div>
 
   <!-- Score -->
-  <div class="section">
-    <div class="sec-title">综合相似度</div>
-    <div class="score-wrap">
-      <div style="position:relative;width:76px;height:76px;flex-shrink:0">
-        <svg width="76" height="76" viewBox="0 0 76 76" class="ring-svg">
-          <circle id="score-track" cx="38" cy="38" r="30" fill="none" stroke-width="6"/>
-          <circle id="score-arc"   cx="38" cy="38" r="30" fill="none" stroke-width="6"
-                  stroke-dasharray="188.5" stroke-dashoffset="188.5"/>
+  <div class="glass-card">
+    <div class="section-title">综合相似度</div>
+    <div class="score-container">
+      <div class="ring-wrapper">
+        <svg width="120" height="120" class="ring-svg" viewBox="0 0 120 120">
+          <circle id="score-track" cx="60" cy="60" r="52"/>
+          <circle id="score-arc" cx="60" cy="60" r="52" 
+                  stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
         </svg>
-        <div class="ring-lbl"><span id="score-num" style="color:var(--text)">—</span></div>
+        <div class="ring-center">
+          <div id="score-num">—</div>
+          <div class="score-label">相似度</div>
+        </div>
       </div>
       <div class="score-info">
-        <div id="grade-badge">等待双侧数据</div>
-        <div id="cmp-mode" style="min-height:16px;text-align:center;margin-bottom:2px"></div>
-        <div id="score-worst" style="color:var(--muted);font-size:.7rem">两侧均开始分析后显示对比评分</div>
+        <div id="grade-badge" class="badge-poor">等待双侧数据</div>
+        <div id="cmp-mode" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;min-height:20px"></div>
+        <div id="score-worst" style="color:var(--text-secondary);font-size:0.85rem;line-height:1.6">
+          两侧均开始分析后显示对比评分
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Comparison bars -->
-  <div class="section" style="flex:1;overflow-y:auto">
-    <div class="sec-title">关节对比
-      <span style="font-size:.62rem;font-weight:400;color:var(--a-clr)">■A</span>
-      <span style="font-size:.62rem;font-weight:400;color:var(--b-clr);margin-left:4px">│B参考</span>
-    </div>
-    <div id="cmp-bars">
-      <div style="color:var(--muted);font-size:.74rem;text-align:center;padding:14px 0">等待双侧数据...</div>
+<!-- Comparison bars -  -->
+<div class="glass-card" style="flex:1;display:flex;flex-direction:column;min-height:320px">
+  <div class="section-title">
+    关节对比
+    <span style="font-size:0.7rem;font-weight:400;color:var(--cyan);margin-left:8px">● A</span>
+    <span style="font-size:0.7rem;font-weight:400;color:var(--purple);margin-left:4px">│ B参考</span>
+  </div>
+  <div id="cmp-bars" style="flex:1;overflow-y:auto;padding-right:4px">
+    <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:40px 0">
+      等待双侧数据...
     </div>
   </div>
+</div>
 
-  <!-- Symmetry -->
-  <div class="section">
-    <div class="sec-title">对称性对比</div>
-    <div id="sym-cmp">
-      <div style="color:var(--muted);font-size:.72rem;padding:6px 0">等待数据...</div>
+<!-- Symmetry -  -->
+<div class="glass-card">
+  <div class="section-title">对称性对比</div>
+  <div id="sym-cmp" style="padding: 4px 0;">
+    <div style="color: var(--text-muted); font-size: 0.85rem; padding: 20px 0; text-align: center;">
+      等待数据...
     </div>
   </div>
+</div>
 
   <!-- C3D notice if missing -->
   {% if not has_ezc3d %}
-  <div class="section">
-    <div style="font-size:.75rem;color:var(--amber);margin-bottom:8px">⚠ 未安装 ezc3d，C3D 功能不可用</div>
-    <button class="btn btn-ghost" style="font-size:.74rem" id="install-ezc3d-btn" onclick="installEzc3d()">⬇ 一键安装 ezc3d</button>
-    <div id="install-prog" style="display:none;margin-top:8px" class="loading"><div class="spin"></div>安装中（约30秒）...</div>
-    <div id="install-res" style="display:none;font-size:.72rem;margin-top:6px"></div>
+  <div class="glass-card" style="border-color:rgba(251,191,36,0.3)">
+    <div style="font-size:0.9rem;color:var(--amber);margin-bottom:12px;display:flex;align-items:center;gap:8px">
+      <span>⚠</span> 未安装 ezc3d，C3D 功能不可用
+    </div>
+    <button class="btn btn-ghost" style="font-size:0.85rem" id="install-ezc3d-btn" onclick="installEzc3d()">⬇ 一键安装 ezc3d</button>
+    <div id="install-prog" style="display:none;margin-top:12px" class="loading">
+      <div class="spin"></div> 安装中（约30秒）...
+    </div>
+    <div id="install-res" style="display:none;font-size:0.8rem;margin-top:8px"></div>
   </div>
   {% endif %}
 
@@ -178,7 +232,10 @@
 
 <!-- ══ SIDE B ══ -->
 <div class="side-panel b" id="panel-b">
-  <div class="side-label b">◀ 侧 B &nbsp;<span style="font-weight:400;opacity:.6">参考舞者</span></div>
+  <div class="side-label b">
+    <span>◀ 侧 B</span>
+    <span style="font-weight:400;opacity:.6;font-size:0.7rem">参考舞者</span>
+  </div>
 
   <div class="vid-wrap">
     <img id="feed-b" src="/feed_b" alt="侧B视频">
@@ -191,14 +248,20 @@
       <button class="tab-btn b" id="tb-vid" onclick="setSrc('b','video')">🎬 视频</button>
       <button class="tab-btn b" id="tb-c3d" onclick="setSrc('b','c3d')">🦴 C3D</button>
     </div>
+    
     <div class="ctrl-row" id="b-cam-opts">
-      <select id="b-cam-idx"><option value="0">摄像头 0</option><option value="1">摄像头 1</option></select>
+      <select id="b-cam-idx" style="flex:1">
+        <option value="0">摄像头 0</option>
+        <option value="1">摄像头 1</option>
+      </select>
     </div>
+    
     <div class="ctrl-row" id="b-vid-opts" style="display:none">
-      <label class="upload-lbl" for="b-vid-file">📂 选择视频</label>
+      <label class="upload-lbl" for="b-vid-file">📂 选择视频文件</label>
       <input type="file" id="b-vid-file" accept=".mp4,.avi,.mov,.mkv,.webm" onchange="uploadVideo('b',this)">
-      <span id="b-vid-name" style="font-size:.7rem;color:var(--muted)"></span>
+      <span id="b-vid-name" style="font-size:0.8rem;color:var(--text-muted);flex:1;word-break:break-all"></span>
     </div>
+    
     <div id="b-c3d-opts" style="display:none">
       <div class="c3d-zone" id="b-c3d-zone"
         onclick="document.getElementById('b-c3d-file').click()"
@@ -206,40 +269,52 @@
         ondragleave="this.classList.remove('over')"
         ondrop="dropC3D(event,'b')">
         📁 拖拽或点击上传 .c3d 文件
-        <input type="file" id="b-c3d-file" accept=".c3d" onchange="uploadC3D('b',this.files[0])">
+        <input type="file" id="b-c3d-file" accept=".c3d" onchange="uploadC3D('b',this.files[0])" style="display:none">
       </div>
-      <div style="padding:0 12px 6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        <select id="b-c3d-preset" style="font-size:.72rem"><option value="vicon_pig">Vicon PiG</option><option value="c3d_generic">通用C3D</option></select>
-        <button class="btn btn-ghost" style="font-size:.7rem;padding:3px 8px" onclick="toggleCustomMap('b')">自定义...</button>
-        <button class="btn btn-stop" style="font-size:.7rem;padding:3px 8px" id="b-c3d-clear" onclick="clearC3D('b')" disabled>清除</button>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <select id="b-c3d-preset" style="flex:1;font-size:0.8rem">
+          <option value="vicon_pig">Vicon PiG</option>
+          <option value="c3d_generic">通用C3D</option>
+        </select>
+        <button class="btn btn-ghost" style="font-size:0.75rem;padding:6px 12px" onclick="toggleCustomMap('b')">自定义</button>
+        <button class="btn btn-stop" style="font-size:0.75rem;padding:6px 12px" id="b-c3d-clear" onclick="clearC3D('b')" disabled>清除</button>
       </div>
-      <textarea id="b-custom-map" rows="2" style="display:none;width:calc(100% - 24px);margin:0 12px 6px;
-        background:var(--bg0);border:1px solid var(--border-hi);border-radius:5px;color:var(--text);
-        padding:5px;font-size:.68rem;font-family:var(--mono);resize:vertical"
+      <textarea id="b-custom-map" rows="2" style="display:none;width:100%;margin-top:8px;background:rgba(15,23,42,0.6);border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-primary);padding:8px;font-size:0.75rem;font-family:var(--mono);resize:vertical"
         placeholder='{"left_knee":{"markers":["LHIP","LKNE","LANK"],"cn_name":"左膝"},...}'></textarea>
-      <div class="c3d-ok" id="b-c3d-ok"></div>
-      <div class="c3d-err" id="b-c3d-err"></div>
+      <div class="c3d-ok" id="b-c3d-ok" style="display:none;margin-top:8px;padding:10px;border-radius:8px;font-size:0.8rem;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:var(--green)"></div>
+      <div class="c3d-err" id="b-c3d-err" style="display:none;margin-top:8px;padding:10px;border-radius:8px;font-size:0.8rem;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:var(--red)"></div>
     </div>
-    <!-- 数据槽控制 -->
-    <div class="ctrl-row" id="b-data-row">
-      <button class="btn btn-b"    id="b-load"   onclick="loadData('b')"  >📥 装载数据</button>
-      <button class="btn btn-stop" id="b-unload" onclick="unloadData('b')" style="display:none">🗑 卸载</button>
+
+    <div class="ctrl-row" id="b-data-row" style="margin-top:4px">
+      <button class="btn btn-b" id="b-load" onclick="loadData('b')" style="flex:1;justify-content:center">📥 装载数据</button>
+      <button class="btn btn-stop" id="b-unload" onclick="unloadData('b')" style="display:none;flex:1;justify-content:center">🗑 卸载</button>
     </div>
-    <!-- 分析控制（仅装载后显示） -->
-    <div class="ctrl-row" id="b-run-row" style="display:none">
-      <button class="btn btn-b"    id="b-start"  onclick="startSide('b')">▶ 开始分析</button>
-      <button class="btn btn-stop" id="b-stop"   onclick="stopSide('b')"  style="display:none">⏹ 停止</button>
+    
+    <div class="ctrl-row" id="b-run-row" style="display:none;margin-top:8px">
+      <button class="btn btn-b" id="b-start" onclick="startSide('b')" style="flex:1;justify-content:center">▶ 开始分析</button>
+      <button class="btn btn-stop" id="b-stop" onclick="stopSide('b')" style="display:none;flex:1;justify-content:center">⏹ 停止</button>
     </div>
-    <!-- 数据摘要（装载后显示） -->
-    <div id="b-data-info" style="display:none;padding:4px 12px 0;font-size:.68rem;color:var(--muted)">
-      <span id="b-frame-count">0</span> 帧已记录
-      &nbsp;·&nbsp;
-      <span id="b-data-dur">0.0</span>s
+
+    <div id="b-data-info" style="display:none;margin-top:12px">
+      <div class="data-stats">
+        <div class="stat-card">
+          <div class="stat-label">总帧数</div>
+          <div class="stat-value" id="b-frame-count">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">时长</div>
+          <div class="stat-value" id="b-data-dur">0.0s</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">FPS</div>
+          <div class="stat-value" id="b-fps">30</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="joint-mini" id="b-joints">
-    <div style="color:var(--muted);font-size:.74rem;text-align:center;padding:16px 0">等待检测...</div>
+    <div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:20px 0">等待检测...</div>
   </div>
 </div>
 
@@ -248,17 +323,13 @@
 <!-- AI Advice -->
 <div class="ai-panel">
   <div class="ai-bar">
-    <button class="btn btn-a" id="advice-btn" onclick="getAdvice()">🤖 获取 AI 双人对比建议</button>
-    <input type="text" id="extra-ctx"
-      style="flex:1;min-width:160px;background:var(--bg2);border:1px solid var(--border-hi);
-             border-radius:7px;color:var(--text);padding:6px 10px;font-size:.78rem"
-      placeholder="补充说明（舞种、阶段等）...">
+    <button class="btn btn-a" id="advice-btn" onclick="getAdvice()" style="padding:10px 24px">🤖 获取 AI 建议</button>
+    <input type="text" id="extra-ctx" placeholder="补充说明（舞种、阶段等）...">
   </div>
   <div class="advice-box" id="advice-box">
-    <span class="ph">开始分析两侧后，点击「获取 AI 双人对比建议」，AI 将对比两侧关节角度并给出改进建议...</span>
+    <span style="color:var(--text-muted);font-style:italic">开始分析两侧后，点击「获取 AI 双人对比建议」，AI 将对比两侧关节角度并给出改进建议...</span>
   </div>
 </div>
-
 
 </div><!-- /#compare-page -->
 
@@ -267,234 +338,174 @@
 <!-- ══════════════════════════════════════════════════════ -->
 <div id="analysis-page" style="flex:1;display:none;flex-direction:column;overflow:hidden">
 
-  <!-- ── Top toolbar ── -->
-  <div id="an-toolbar" style="background:var(--bg1);border-bottom:1px solid var(--border);
-       padding:8px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;flex-shrink:0">
-
-    <!-- View mode toggle -->
-    <div style="display:flex;gap:0;border:1px solid rgba(79,142,247,.4);border-radius:7px;overflow:hidden">
-      <button class="nav-tab active" id="vm-raw"     onclick="anSetViewMode('raw')"
-        style="font-size:.73rem">原始时序</button>
-      <button class="nav-tab"        id="vm-aligned" onclick="anSetViewMode('aligned')"
-        style="font-size:.73rem">对齐对比</button>
+  <!-- Top toolbar -->
+  <div id="an-toolbar">
+    <div style="display:flex;gap:4px;background:rgba(15,23,42,0.6);padding:4px;border-radius:var(--radius-pill);border:1px solid var(--border-subtle)">
+      <button class="nav-tab active" id="vm-raw" onclick="anSetViewMode('raw')" style="font-size:0.8rem">原始时序</button>
+      <button class="nav-tab" id="vm-aligned" onclick="anSetViewMode('aligned')" style="font-size:0.8rem">对齐对比</button>
     </div>
 
-    <div style="display:flex;gap:0;border:1px solid var(--border-hi);border-radius:7px;overflow:hidden"
-         id="side-btns">
-      <button class="nav-tab active" id="an-btn-a"  onclick="anSetSide('a')"  style="font-size:.75rem">侧 A</button>
-      <button class="nav-tab"        id="an-btn-b"  onclick="anSetSide('b')"  style="font-size:.75rem">侧 B</button>
-      <button class="nav-tab"        id="an-btn-ab" onclick="anSetSide('ab')" style="font-size:.75rem">双侧叠加</button>
+    <div style="display:flex;gap:4px;background:rgba(15,23,42,0.6);padding:4px;border-radius:var(--radius-pill);border:1px solid var(--border-subtle)" id="side-btns">
+      <button class="nav-tab active" id="an-btn-a" onclick="anSetSide('a')" style="font-size:0.8rem">侧 A</button>
+      <button class="nav-tab" id="an-btn-b" onclick="anSetSide('b')" style="font-size:0.8rem">侧 B</button>
+      <button class="nav-tab" id="an-btn-ab" onclick="anSetSide('ab')" style="font-size:0.8rem">双侧叠加</button>
     </div>
 
     <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center">
-      <span style="font-size:.7rem;color:var(--muted)">关节:</span>
-      <button class="nav-tab active" id="jf-all"   onclick="anFilterJoint('all')"   style="font-size:.67rem;padding:3px 8px">全部</button>
-      <button class="nav-tab"        id="jf-arm"   onclick="anFilterJoint('arm')"   style="font-size:.67rem;padding:3px 8px">手臂</button>
-      <button class="nav-tab"        id="jf-leg"   onclick="anFilterJoint('leg')"   style="font-size:.67rem;padding:3px 8px">腿部</button>
-      <button class="nav-tab"        id="jf-torso" onclick="anFilterJoint('torso')" style="font-size:.67rem;padding:3px 8px">躯干</button>
+      <span style="font-size:0.8rem;color:var(--text-muted)">关节:</span>
+      <button class="nav-tab active" id="jf-all" onclick="anFilterJoint('all')" style="font-size:0.75rem;padding:4px 12px">全部</button>
+      <button class="nav-tab" id="jf-arm" onclick="anFilterJoint('arm')" style="font-size:0.75rem;padding:4px 12px">手臂</button>
+      <button class="nav-tab" id="jf-leg" onclick="anFilterJoint('leg')" style="font-size:0.75rem;padding:4px 12px">腿部</button>
+      <button class="nav-tab" id="jf-torso" onclick="anFilterJoint('torso')" style="font-size:0.75rem;padding:4px 12px">躯干</button>
     </div>
 
-    <div style="display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--muted)">
-      平滑:<input type="range" id="smooth-range" min="1" max="15" value="3"
-        style="width:64px;accent-color:var(--a-clr)" oninput="document.getElementById('smooth-val').textContent=this.value;renderChart()">
-      <span id="smooth-val">3</span>帧
+    <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted)">
+      平滑:<input type="range" id="smooth-range" min="1" max="15" value="3" style="width:80px;accent-color:var(--cyan)" oninput="document.getElementById('smooth-val').textContent=this.value;renderChart()">
+      <span id="smooth-val" style="font-family:var(--mono);min-width:20px">3</span>帧
     </div>
 
-    <!-- Video overlay toggle -->
-    <label style="display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--muted);cursor:pointer;user-select:none">
-      <input type="checkbox" id="overlay-toggle" onchange="anDraw()"
-        style="accent-color:var(--a-clr);width:14px;height:14px">
-      视频+骨架叠加
+    <label style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--text-muted);cursor:pointer;user-select:none">
+      <input type="checkbox" id="overlay-toggle" onchange="anDraw()" style="accent-color:var(--cyan);width:16px;height:16px">
+      视频叠加
     </label>
 
-    <div style="margin-left:auto;display:flex;gap:6px">
-      <button class="btn btn-ghost" style="font-size:.7rem;padding:4px 9px" onclick="anClearHistory()">🗑 清除</button>
-      <button class="btn btn-ghost" style="font-size:.7rem;padding:4px 9px" onclick="anRefresh()">↻ 刷新</button>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn btn-ghost" style="font-size:0.8rem;padding:6px 14px" onclick="anClearHistory()">🗑 清除</button>
+      <button class="btn btn-ghost" style="font-size:0.8rem;padding:6px 14px" onclick="anRefresh()">↻ 刷新</button>
     </div>
   </div>
 
   <!-- Aligned mode info strip -->
-  <div id="aligned-info" style="display:none;background:rgba(79,142,247,.05);
-       border-bottom:1px solid rgba(37,99,235,.2);padding:6px 16px;
-       flex-shrink:0;display:none;flex-wrap:wrap;gap:12px;align-items:center">
-    <span style="font-size:.68rem;color:var(--a-clr);font-weight:700">📐 对齐模式</span>
-    <span id="ai-scale"  style="font-size:.68rem;color:var(--muted)">速度比 —</span>
-    <span id="ai-offset" style="font-size:.68rem;color:var(--muted)">B偏移 —</span>
-    <span id="ai-dur"    style="font-size:.68rem;color:var(--muted)">时长 —</span>
-    <span id="ai-status" style="font-size:.68rem;color:var(--amber)"></span>
+  <div id="aligned-info" style="display:none;background:rgba(56,189,248,0.05);border-bottom:1px solid rgba(56,189,248,0.2);padding:8px 20px;flex-wrap:wrap;gap:16px;align-items:center">
+    <span style="font-size:0.8rem;color:var(--cyan);font-weight:700">📐 对齐模式</span>
+    <span id="ai-scale" style="font-size:0.8rem;color:var(--text-muted)">速度比 —</span>
+    <span id="ai-offset" style="font-size:0.8rem;color:var(--text-muted)">B偏移 —</span>
+    <span id="ai-dur" style="font-size:0.8rem;color:var(--text-muted)">时长 —</span>
+    <span id="ai-status" style="font-size:0.8rem;color:var(--amber)"></span>
   </div>
 
-  <!-- ── Main area: left panel + right chart ── -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden;min-height:0">
+  <!-- Main area -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden;min-height:0;gap:20px;padding:20px">
 
-    <!-- Left: skeleton/video canvas + joint table + stats -->
-    <div style="border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;min-height:0">
-
-      <div style="padding:12px 12px 4px;flex-shrink:0">
-        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-                    color:var(--muted);margin-bottom:7px;display:flex;justify-content:space-between">
-          <span>姿态预览</span>
-          <span id="frame-timestamp" style="font-family:monospace;font-weight:400;color:var(--a-clr)"></span>
+    <!-- Left: skeleton/video -->
+    <div class="glass-card" style="display:flex;flex-direction:column;overflow:hidden;padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted)">姿态预览</span>
+        <span id="frame-timestamp" style="font-family:var(--mono);font-size:0.8rem;color:var(--cyan)"></span>
+      </div>
+      
+      <div id="preview-wrap" style="position:relative;border-radius:12px;overflow:hidden;background:#000;flex:1;min-height:300px">
+        <canvas id="video-canvas" width="640" height="480" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+        <canvas id="skel-canvas" width="640" height="480" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:2"></canvas>
+        <div id="frame-loading" style="display:none;position:absolute;inset:0;z-index:3;align-items:center;justify-content:center;background:rgba(0,0,0,0.5)">
+          <div class="spin" style="width:32px;height:32px;border-width:3px"></div>
         </div>
-        <!-- Overlay canvas: video behind + skeleton on top -->
-        <div id="preview-wrap" style="position:relative;border-radius:8px;overflow:hidden;
-             background:var(--bg2);aspect-ratio:320/240">
-          <!-- video background -->
-          <canvas id="video-canvas" width="640" height="480"
-            style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
-          <!-- skeleton overlay (transparent bg) -->
-          <canvas id="skel-canvas"  width="640" height="480"
-            style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:2"></canvas>
-          <!-- loading spinner -->
-          <div id="frame-loading" style="display:none;position:absolute;inset:0;z-index:3;
-               align-items:center;justify-content:center;background:rgba(0,0,0,.35)">
-            <div style="width:22px;height:22px;border:2px solid rgba(0,216,255,.3);
-                 border-top-color:var(--a-clr);border-radius:50%;animation:sp .8s linear infinite"></div>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:5px;font-size:.63rem;color:var(--muted);flex-wrap:wrap">
-          <span><span style="color:var(--a-clr)">━</span> A骨架</span>
-          <span><span style="color:var(--b-clr)">━</span> B骨架</span>
-          <span><span style="color:var(--green)">●</span> 关节点</span>
-          <span id="no-frame-hint" style="color:var(--amber);display:none">⚠ 无视频帧，仅骨架</span>
-        </div>
+      </div>
+      
+      <div style="display:flex;gap:12px;margin-top:12px;font-size:0.8rem;color:var(--text-muted);flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:3px;background:var(--cyan);border-radius:2px"></span> A骨架</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:3px;background:var(--purple);border-radius:2px"></span> B骨架</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green-glow)"></span> 关节点</span>
+        <span id="no-frame-hint" style="color:var(--amber);display:none;margin-left:auto">⚠ 无视频帧，仅骨架</span>
       </div>
 
       <!-- Joint table -->
-      <div style="padding:8px 12px;flex-shrink:0">
-        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-                    color:var(--muted);margin-bottom:6px">关节角度</div>
-        <div id="an-joint-table" style="font-size:.7rem;line-height:1.75">
-          <div style="color:var(--muted)">等待数据...</div>
+      <div style="margin-top:16px;border-top:1px solid var(--border-subtle);padding-top:12px">
+        <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">关节角度</div>
+        <div id="an-joint-table" style="font-size:0.85rem;max-height:150px;overflow-y:auto">
+          <div style="color:var(--text-muted)">等待数据...</div>
         </div>
       </div>
 
       <!-- Stats -->
-      <div style="padding:8px 12px;border-top:1px solid var(--border);flex-shrink:0">
-        <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-                    color:var(--muted);margin-bottom:6px">统计摘要
-          <span id="stat-count" style="color:var(--a-clr);font-weight:400;margin-left:4px"></span>
+      <div style="margin-top:12px;border-top:1px solid var(--border-subtle);padding-top:12px">
+        <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">
+          统计摘要 <span id="stat-count" style="color:var(--cyan);font-weight:400"></span>
         </div>
-        <div id="an-stats" style="font-size:.69rem;color:var(--muted)">暂无记录数据</div>
+        <div id="an-stats" style="font-size:0.8rem;color:var(--text-muted);max-height:100px;overflow-y:auto">暂无记录数据</div>
       </div>
     </div>
 
     <!-- Right: chart + timeline -->
-    <div style="display:flex;flex-direction:column;overflow:hidden;min-height:0">
-
+    <div style="display:flex;flex-direction:column;gap:16px;min-height:0">
+      
       <!-- Chart -->
-      <div style="flex:1;padding:10px 12px 4px;display:flex;flex-direction:column;min-height:0;max-height:calc(100vh - 260px)">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-shrink:0">
-          <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">
-            关节角度时序曲线 <span style="font-size:.6rem;font-weight:400;color:var(--muted)">(点击定位)</span>
-          </div>
-          <div style="font-size:.66rem;color:var(--muted)" id="chart-info">—</div>
+      <div class="glass-card" style="flex:1;display:flex;flex-direction:column;padding:16px;min-height:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0">
+          <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted)">
+            关节角度时序曲线 <span style="font-weight:400;color:var(--text-muted)">(点击定位)</span>
+          </span>
+          <span id="chart-info" style="font-size:0.8rem;color:var(--text-muted);font-family:var(--mono)">—</span>
         </div>
-        <canvas id="chart-canvas" style="flex:1;min-height:0;width:100%;
-          background:var(--bg1);border:1px solid var(--border);border-radius:8px;display:block;cursor:crosshair"></canvas>
-        <!-- Legend with checkboxes -->
-        <div style="margin-top:5px;flex-shrink:0">
-          <div style="display:flex;gap:5px;align-items:center;margin-bottom:4px;flex-wrap:wrap">
-            <span style="font-size:.62rem;color:var(--muted)">显示关节:</span>
-            <button onclick="toggleAllJoints(true)"
-              style="background:none;border:1px solid var(--border-hi);border-radius:4px;color:var(--muted);
-                     font-size:.62rem;padding:1px 6px;cursor:pointer;font-family:var(--font)"
-              onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">全选</button>
-            <button onclick="toggleAllJoints(false)"
-              style="background:none;border:1px solid var(--border-hi);border-radius:4px;color:var(--muted);
-                     font-size:.62rem;padding:1px 6px;cursor:pointer;font-family:var(--font)"
-              onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--muted)'">全不选</button>
+        
+        <canvas id="chart-canvas" style="flex:1;width:100%;min-height:200px;background:rgba(15,23,42,0.4);border-radius:8px;border:1px solid var(--border-subtle)"></canvas>
+        
+        <!-- Legend -->
+        <div style="margin-top:12px;flex-shrink:0">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+            <span style="font-size:0.75rem;color:var(--text-muted)">显示关节:</span>
+            <button onclick="toggleAllJoints(true)" class="btn btn-ghost" style="font-size:0.7rem;padding:2px 10px">全选</button>
+            <button onclick="toggleAllJoints(false)" class="btn btn-ghost" style="font-size:0.7rem;padding:2px 10px">全不选</button>
           </div>
-          <div id="chart-legend" style="display:flex;gap:6px;flex-wrap:wrap;font-size:.64rem"></div>
+          <div id="chart-legend" style="display:flex;gap:8px;flex-wrap:wrap;font-size:0.75rem;max-height:80px;overflow-y:auto"></div>
         </div>
       </div>
 
-      <!-- ── Timeline controls ── -->
-      <div id="timeline-bar" style="background:var(--bg0);border-top:1px solid var(--border);
-           padding:10px 16px 10px;flex-shrink:0">
-
-        <!-- Waveform strip (angle energy visualization) -->
-        <div style="height:28px;margin-bottom:4px;position:relative">
-          <canvas id="tl-waveform" style="width:100%;height:100%;display:block;border-radius:4px;opacity:.7"></canvas>
-          <!-- Playhead line on waveform -->
-          <div id="tl-playhead" style="position:absolute;top:0;bottom:0;left:0;width:1.5px;
-               background:rgba(255,255,255,.85);pointer-events:none"></div>
+      <!-- Timeline -->
+      <div class="glass-card" style="padding:16px;flex-shrink:0">
+        <!-- Waveform -->
+        <div style="height:32px;margin-bottom:8px;position:relative;background:rgba(15,23,42,0.4);border-radius:6px;overflow:hidden">
+          <canvas id="tl-waveform" style="width:100%;height:100%;display:block"></canvas>
+          <div id="tl-playhead" style="position:absolute;top:0;bottom:0;left:0;width:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan-glow);pointer-events:none"></div>
         </div>
 
-        <!-- Scrubber row -->
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <span id="tl-cur"  style="font-family:monospace;font-size:.72rem;color:var(--a-clr);min-width:42px">0.0s</span>
-          <div style="flex:1;position:relative;height:24px;display:flex;align-items:center" id="tl-track-wrap">
-            <div id="tl-track" style="width:100%;height:8px;background:var(--bg3);border-radius:4px;
-                 position:relative;cursor:pointer" onclick="tlClickSeek(event)" onmousemove="tlHover(event)" onmouseleave="tlHoverEnd()">
-              <!-- Filled portion -->
-              <div id="tl-fill" style="height:100%;width:0%;background:var(--a-clr);
-                   border-radius:4px;pointer-events:none"></div>
-              <!-- Thumb -->
-              <div id="tl-thumb" style="position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);
-                   width:18px;height:18px;border-radius:50%;background:var(--a-clr);
-                   ;cursor:grab;pointer-events:auto;border:2px solid #fff"
-                   onmousedown="tlDragStart(event)"></div>
-              <!-- Hover time tooltip + mini preview -->
-              <div id="tl-tooltip" style="position:absolute;top:-52px;background:var(--bg3);
-                   border:1px solid var(--border-hi);border-radius:5px;padding:3px 7px;
-                   font-size:.65rem;font-family:monospace;color:var(--a-clr);
-                   pointer-events:none;display:none;white-space:nowrap">
-                <div id="tl-tt-time" style="text-align:center">0.0s</div>
+        <!-- Scrubber -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <span id="tl-cur" style="font-family:var(--mono);font-size:0.85rem;color:var(--cyan);min-width:50px">0.0s</span>
+          <div style="flex:1;position:relative;height:32px;display:flex;align-items:center" id="tl-track-wrap">
+            <div id="tl-track" style="width:100%;height:10px;background:rgba(255,255,255,0.05);border-radius:var(--radius-pill);position:relative;cursor:pointer" onclick="tlClickSeek(event)" onmousemove="tlHover(event)" onmouseleave="tlHoverEnd()">
+              <div id="tl-fill" style="height:100%;width:0%;background:var(--accent-gradient);border-radius:var(--radius-pill);box-shadow:0 0 10px var(--cyan-glow);pointer-events:none"></div>
+              <div id="tl-thumb" style="position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;background:var(--cyan);cursor:grab;pointer-events:auto;border:3px solid var(--bg-deep);box-shadow:0 0 15px var(--cyan-glow)" onmousedown="tlDragStart(event)"></div>
+              <div id="tl-tooltip" style="position:absolute;top:-40px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:6px;padding:4px 10px;font-size:0.75rem;font-family:var(--mono);color:var(--cyan);pointer-events:none;display:none;transform:translateX(-50%);white-space:nowrap;backdrop-filter:blur(8px)">
+                <div id="tl-tt-time">0.0s</div>
               </div>
             </div>
           </div>
-          <span id="tl-total" style="font-family:monospace;font-size:.72rem;color:var(--muted);min-width:42px;text-align:right">0.0s</span>
+          <span id="tl-total" style="font-family:var(--mono);font-size:0.85rem;color:var(--text-muted);min-width:50px;text-align:right">0.0s</span>
         </div>
 
-        <!-- Buttons row -->
-        <div style="display:flex;align-items:center;gap:8px">
-          <!-- Skip to start -->
-          <button onclick="tlGoTo(0)" title="回到开始"
-            style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:2px 4px;line-height:1">⏮</button>
-          <!-- Step back -->
-          <button onclick="tlStep(-1)" title="后退1帧"
-            style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:2px 4px;line-height:1">⏪</button>
-          <!-- Play/Pause -->
-          <button id="tl-playbtn" onclick="tlTogglePlay()"
-            style="background:var(--a-clr);border:none;color:#fff;
-                   cursor:pointer;font-size:1.1rem;padding:5px 14px;border-radius:7px;line-height:1;
-                   box-shadow:0 2px 8px rgba(37,99,235,.3)">▶</button>
-          <!-- Step forward -->
-          <button onclick="tlStep(1)" title="前进1帧"
-            style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:2px 4px;line-height:1">⏩</button>
-          <!-- Skip to end -->
-          <button onclick="tlGoTo(9999)" title="跳到末尾"
-            style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:2px 4px;line-height:1">⏭</button>
+        <!-- Controls -->
+        <div style="display:flex;align-items:center;gap:12px">
+          <button onclick="tlGoTo(0)" title="回到开始" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2rem;padding:4px;line-height:1;transition:color 0.2s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-muted)'">⏮</button>
+          <button onclick="tlStep(-1)" title="后退1帧" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2rem;padding:4px;line-height:1;transition:color 0.2s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-muted)'">⏪</button>
+          <button id="tl-playbtn" onclick="tlTogglePlay()" style="background:var(--cyan);border:none;color:#fff;cursor:pointer;font-size:1.1rem;padding:8px 20px;border-radius:var(--radius-pill);line-height:1;box-shadow:0 4px 15px rgba(56,189,248,0.4);transition:all 0.2s;font-weight:600">▶</button>
+          <button onclick="tlStep(1)" title="前进1帧" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2rem;padding:4px;line-height:1;transition:color 0.2s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-muted)'">⏩</button>
+          <button onclick="tlGoTo(9999)" title="跳到末尾" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.2rem;padding:4px;line-height:1;transition:color 0.2s" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-muted)'">⏭</button>
 
-          <!-- Speed -->
-          <div style="display:flex;gap:0;border:1px solid var(--border-hi);border-radius:5px;overflow:hidden;margin-left:6px">
-            <button class="spd-btn" id="spd-0.5" onclick="tlSetSpeed(0.5)" style="font-size:.68rem;padding:3px 7px">0.5×</button>
-            <button class="spd-btn active" id="spd-1"   onclick="tlSetSpeed(1)"   style="font-size:.68rem;padding:3px 7px">1×</button>
-            <button class="spd-btn" id="spd-2"   onclick="tlSetSpeed(2)"   style="font-size:.68rem;padding:3px 7px">2×</button>
+          <div style="display:flex;gap:0;background:rgba(15,23,42,0.6);padding:3px;border-radius:6px;border:1px solid var(--border-subtle);margin-left:8px">
+            <button class="spd-btn" id="spd-0.5" onclick="tlSetSpeed(0.5)" style="font-size:0.75rem;padding:4px 10px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-family:var(--mono)">0.5×</button>
+            <button class="spd-btn active" id="spd-1" onclick="tlSetSpeed(1)" style="font-size:0.75rem;padding:4px 10px;background:var(--cyan);border:none;color:#fff;cursor:pointer;font-family:var(--mono);border-radius:4px;font-weight:600">1×</button>
+            <button class="spd-btn" id="spd-2" onclick="tlSetSpeed(2)" style="font-size:0.75rem;padding:4px 10px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-family:var(--mono)">2×</button>
           </div>
 
-          <!-- Loop toggle -->
-          <label style="display:flex;align-items:center;gap:4px;font-size:.69rem;color:var(--muted);cursor:pointer;margin-left:4px">
-            <input type="checkbox" id="tl-loop" checked style="accent-color:var(--a-clr);width:13px;height:13px">循环
+          <label style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--text-muted);cursor:pointer;margin-left:4px">
+            <input type="checkbox" id="tl-loop" checked style="accent-color:var(--cyan);width:16px;height:16px">循环
           </label>
 
-          <div style="margin-left:auto;font-size:.68rem;color:var(--muted)">
-            帧 <span id="tl-frame-num" style="color:var(--text);font-family:monospace">0</span>
-            / <span id="tl-frame-tot" style="font-family:monospace">0</span>
+          <div style="margin-left:auto;font-size:0.8rem;color:var(--text-muted)">
+            帧 <span id="tl-frame-num" style="color:var(--text-primary);font-family:var(--mono);font-weight:600">0</span>
+            / <span id="tl-frame-tot" style="font-family:var(--mono)">0</span>
           </div>
         </div>
       </div>
-
-    </div><!-- right col -->
-  </div><!-- grid -->
+    </div>
+  </div>
 </div><!-- /#analysis-page -->
 
 </div><!-- /#app -->
 <div class="toast" id="toast"></div>
 
 <script>
-  /* 服务端注入的初始数据，供 app.js 读取 */
   window._INIT = {
     provKeys: {{ api_keys_json | safe }},
     provider: "{{ provider }}"
