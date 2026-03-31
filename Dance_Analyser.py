@@ -1,5 +1,5 @@
 """
-舞蹈动作分析系统 v3.0
+舞蹈动作分析系统 v3.1
 运行: python app.py  (浏览器自动打开)
 """
 import os, sys, json, time, threading, tempfile, webbrowser, warnings, urllib.request
@@ -429,6 +429,21 @@ def compare_timeseries(hist_a: list, hist_b: list) -> Dict:
                 "n_a": len(hist_a), "n_b": len(hist_b)}
 
     joint_keys = list(MP_JOINT_DEF.keys())
+    # ═══════════════════════════════════════════════════════════
+    #  身体部位精细化分组（新增）
+    # ═══════════════════════════════════════════════════════════
+    BODY_REGIONS = {
+        "upper": ["left_elbow", "right_elbow", "left_shoulder", "right_shoulder", "left_wrist", "right_wrist"],
+        "core":  ["left_shoulder", "right_shoulder", "left_hip", "right_hip"],  # 肩髋连接躯干
+        "lower": ["left_hip", "right_hip", "left_knee", "right_knee", "left_ankle", "right_ankle"]
+    }
+    # 收集各部位的相关系数 r，用于计算部位级评分
+    region_rs = {"upper": [], "core": [], "lower": []}
+    
+    # 部位中文映射（用于前端展示）
+    REGION_CN = {"upper": "上身", "core": "核心", "lower": "下肢"}
+
+    joint_keys = list(MP_JOINT_DEF.keys())
     N_PTS = 200
 
     joints_out: Dict = {}
@@ -448,11 +463,21 @@ def compare_timeseries(hist_a: list, hist_b: list) -> Dict:
         dtw_d = aln["dtw"]
         rmsd  = aln["rmsd"]
 
-        r_score    = 50.0 * (r + 1.0)
-        dtw_score  = 100.0 * float(np.exp(-dtw_d / 0.8))
-        rmsd_score = 100.0 * float(np.exp(-rmsd / 25.0))
-        score      = round(0.45 * r_score + 0.35 * dtw_score + 0.20 * rmsd_score, 1)
+        # ── 收集部位相关性数据 ─────────────────────────────────
+        for region, joints in BODY_REGIONS.items():
+            if k in joints:
+                region_rs[region].append(r)
+                break
+        
+        # ── 新权重公式：相关性60% | DTW 30% | RMSD 10% ───────────
+        # 显著提高形态相似度权重，弱化绝对角度误差惩罚
+        r_score    = 50.0 * (r + 1.0)                          # 0-100
+        dtw_score  = 100.0 * float(np.exp(-dtw_d / 0.8))       # 0-100
+        rmsd_score = 100.0 * float(np.exp(-rmsd / 25.0))       # 0-100
+        
+        score = round(0.60 * r_score + 0.30 * dtw_score + 0.10 * rmsd_score, 1)
 
+        # 等级判定（保持原有阈值）
         if score >= 85:   grade = "excellent"
         elif score >= 68: grade = "good"
         elif score >= 45: grade = "warning"
@@ -481,18 +506,46 @@ def compare_timeseries(hist_a: list, hist_b: list) -> Dict:
                 "mean_b":    peak_seg["mean_b"],
                 "direction": peak_seg["direction"],
             },
+            "body_region": next((r for r, lst in BODY_REGIONS.items() if k in lst), "other")  # 标记所属部位
         }
         scores.append(score)
 
     if not scores:
         return {"ok": False, "reason": "双侧无共同可用关节",
-                "overall_score": 0.0, "joints": {},
+                "overall_score": 0.0, "joints": {}, "region_scores": {},
                 "n_a": len(hist_a), "n_b": len(hist_b)}
+
+    # ═══════════════════════════════════════════════════════════
+    #  计算各部位加权相关性评分（新增）
+    # ═══════════════════════════════════════════════════════════
+    region_scores = {}
+    for region, rs in region_rs.items():
+        if rs:
+            avg_r = np.mean(rs)
+            # 转换为 0-100 分制，并计算参与评估的关节数量
+            region_scores[region] = {
+                "cn_name": REGION_CN[region],
+                "score": round(50.0 * (avg_r + 1.0), 1),  # 部位综合相似度
+                "avg_r": round(avg_r, 3),               # 原始相关系数
+                "joints_count": len(rs),                # 有效关节数
+                "weight": 0.6 if region != "other" else 0  # 在总评分中的理论权重占比提示
+            }
+        else:
+            region_scores[region] = {
+                "cn_name": REGION_CN[region],
+                "score": 0.0, "avg_r": 0.0, "joints_count": 0, "weight": 0.6
+            }
 
     return {
         "ok":            True,
         "overall_score": round(float(np.mean(scores)), 1),
         "joints":        joints_out,
+        "region_scores": region_scores,  # 新增：上身/核心/下肢三维评分
+        "scoring_weights": {             # 新增：权重透明化，便于前端展示
+            "correlation": 0.60,
+            "dtw": 0.30,
+            "rmsd": 0.10
+        },
         "n_a":           len(hist_a),
         "n_b":           len(hist_b),
         "n_pts":         N_PTS,

@@ -245,6 +245,14 @@ function updateScoreRing(score) {
 }
 
 function updateComparison(cmp, detA, detB, tsScore) {
+  // 控制部位评分卡片显示
+  const regionCard = document.getElementById('region-scores-card');
+  if (regionCard) {
+    // 仅在当时序数据可用且评分有效时显示
+    const showRegion = tsScore && tsScore.ok && tsScore.region_scores && 
+                       Object.values(tsScore.region_scores).some(r => r.joints_count > 0);
+    regionCard.style.display = showRegion ? 'block' : 'none';
+  }
   const arc = document.getElementById('score-arc');
   const num = document.getElementById('score-num');
   const badge = document.getElementById('grade-badge');
@@ -330,6 +338,60 @@ function updateComparison(cmp, detA, detB, tsScore) {
         ${peakLabel}
       </div>`;
     }).join('');
+    // 部位相关性评分展示（v3.1新增）
+    const regionPanel = document.getElementById('region-scores-panel');
+    if (regionPanel && tsScore.region_scores) {
+      const regions = [
+        {key: 'upper', icon: '💪', name: '上身', desc: '肩/肘/腕动作一致性'},
+        {key: 'core',  icon: '⭕', name: '核心', desc: '躯干稳定性'},
+        {key: 'lower', icon: '🦵', name: '下肢', desc: '髋/膝/踝节奏控制'}
+      ];
+      
+      regionPanel.innerHTML = regions.map(r => {
+        const data = tsScore.region_scores[r.key];
+        if (!data || data.joints_count === 0) return '';
+        
+        const score = data.score;
+        const barColor = score >= 80 ? 'var(--green)' : 
+                        score >= 60 ? 'var(--cyan)' : 
+                        score >= 45 ? 'var(--amber)' : 'var(--red)';
+        
+        return `
+        <div style="margin-bottom:12px;padding:10px;background:rgba(15,23,42,0.4);border-radius:8px;border-left:3px solid ${barColor};">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1.2rem;">${r.icon}</span>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary);font-size:0.9rem;">${r.name}相关性</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">${r.desc} · ${data.joints_count}关节</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:1.25rem;font-weight:700;color:${barColor};font-family:var(--mono);">${Math.round(score)}</div>
+              <div style="font-size:0.7rem;color:var(--text-muted);">r=${data.avg_r}</div>
+            </div>
+          </div>
+          <div style="height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;">
+            <div style="width:${score}%;height:100%;background:${barColor};box-shadow:0 0 8px ${barColor.replace(')', ', 0.4)')};transition:width 0.6s cubic-bezier(0.4,0,0.2,1);"></div>
+          </div>
+          <div style="margin-top:4px;font-size:0.75rem;color:var(--text-muted);text-align:right;">
+            权重占比 60%
+          </div>
+        </div>`;
+      }).join('');
+      
+      // 添加练习重点建议
+      const weakest = regions.map(r => ({...r, ...tsScore.region_scores[r.key]}))
+        .filter(r => r.joints_count > 0)
+        .sort((a,b) => a.score - b.score)[0];
+        
+      if (weakest && weakest.score < 70) {
+        regionPanel.innerHTML += `
+        <div style="margin-top:12px;padding:10px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:8px;font-size:0.85rem;color:var(--amber);">
+          <strong>💡 练习重点建议：</strong>${weakest.name}相关性评分较低(${Math.round(weakest.score)}分)，建议优先强化${weakest.desc.replace(/\/.*$/, '')}动作的时序一致性训练。
+        </div>`;
+      }
+    }
   } else {
     if(!cmp) {
       if(worst) worst.textContent = '等待历史数据积累...';
