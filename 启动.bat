@@ -34,13 +34,25 @@ echo  [OK] Python found: %PYTHON_CMD%
 %PYTHON_CMD% --version
 echo.
 
-if not exist "Dance_Analyser.py" (
-    echo  [ERROR] Dance_Analyser.py not found.
+if not exist "main.py" (
+    echo  [ERROR] main.py not found.
     echo  Make sure these files are in the SAME folder as this .bat:
-    echo    Dance_Analyser.py
+    echo    main.py
+    echo    config\
+    echo    core\
+    echo    temporal\
+    echo    pose\
+    echo    data\
+    echo    processing\
+    echo    web\
+    echo    ai\
+    echo    utils\
     echo    templates\index.html
     echo    static\css\style.css
     echo    static\js\app.js
+    echo.
+    echo  [INFO] This project has been refactored to a modular structure.
+    echo  Please download the complete project from the repository.
     echo.
     pause
     exit /b 1
@@ -78,12 +90,13 @@ echo  [6/6] openai OK
 echo.
 echo  [OK] All packages ready.
 echo  [OK] Starting server...
+echo  [INFO] This is the modular version (v3.1)
 echo.
 echo  Browser will open at: http://127.0.0.1:5000
 echo  Press Ctrl+C or close this window to stop.
 echo.
 
-%PYTHON_CMD% Dance_Analyser.py
+%PYTHON_CMD% main.py
 
 echo.
 echo  [INFO] Server stopped.

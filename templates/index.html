@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>舞蹈动作分析系统</title>
+<title>镜影鉴姿-舞蹈动作分析系统</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -23,7 +23,7 @@
 
 <!-- HEADER -->
 <header>
-  <div class="logo">舞蹈动作分析系统</div>
+  <div class="logo">镜影鉴姿-舞蹈动作分析系统</div>
   
   <div class="hdr-status">
     <div class="side-pill a" id="pill-a">
@@ -149,6 +149,8 @@
       <button class="pbtn" id="pb-openai" onclick="setProv('openai')">OpenAI</button>
       <button class="pbtn" id="pb-qwen" onclick="setProv('qwen')">千问</button>
       <button class="pbtn" id="pb-doubao" onclick="setProv('doubao')">豆包</button>
+      <button class="pbtn" id="pb-zhipu" onclick="setProv('zhipu')">智谱</button>
+      <button class="pbtn" id="pb-kimi" onclick="setProv('kimi')">Kimi</button>
       <button class="pbtn" id="pb-ollama" onclick="setProv('ollama')">Ollama</button>
     </div>
     <div class="ctrl-row" style="margin-bottom:8px">

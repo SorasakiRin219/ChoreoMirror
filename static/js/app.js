@@ -549,6 +549,8 @@ const PINFO = {
   openai:   {hint:'Key: <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--cyan)">platform.openai.com</a>', ph:'sk-...', dm:'gpt-4o', url:false},
   qwen:     {hint:'Key: <a href="https://dashscope.console.aliyun.com" target="_blank" style="color:var(--cyan)">阿里云百炼</a>', ph:'sk-...', dm:'qwen-plus', url:false},
   doubao:   {hint:'Key: <a href="https://console.volcengine.com/ark" target="_blank" style="color:var(--cyan)">火山引擎ARK</a>', ph:'ARK API Key...', dm:'doubao-1-5-pro-32k-250115', url:false},
+  zhipu:    {hint:'Key: <a href="https://open.bigmodel.cn" target="_blank" style="color:var(--cyan)">智谱 AI 开放平台</a>', ph:'...', dm:'glm-4-flash', url:false},
+  kimi:     {hint:'Key: <a href="https://platform.moonshot.cn" target="_blank" style="color:var(--cyan)">Moonshot AI 平台</a>', ph:'sk-...', dm:'moonshot-v1-8k', url:false},
   ollama:   {hint:'本地无需Key，确保Ollama已启动 <a href="https://ollama.com" target="_blank" style="color:var(--cyan)">ollama.com</a>', ph:'（无需填写）', dm:'qwen2.5:7b', url:true},
 };
 
