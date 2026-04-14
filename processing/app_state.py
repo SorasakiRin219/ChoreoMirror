@@ -87,6 +87,10 @@ class AppState:
                 return False, "请先装载数据"
             side.running = True
 
+        # 移动端摄像头模式不需要启动后台线程，由前端推帧触发处理
+        if side.source == "mobile":
+            return True, ""
+
         # 继续追加到现有历史（不清空）
         side._hist_counter = 0
         proc = SideProcessor(side, self._lock)

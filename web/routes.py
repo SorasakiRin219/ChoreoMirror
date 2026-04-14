@@ -116,6 +116,34 @@ def register_routes(app):
             side.camera_idx = int(d.get("camera_idx", 0))
         return jsonify({"ok": True})
 
+    @app.route("/api/upload_frame", methods=["POST"])
+    def api_upload_frame():
+        """接收移动端上传的单帧图像"""
+        which = request.form.get("which", "a")
+        side = STATE.side_a if which == "a" else STATE.side_b
+
+        with STATE._lock:
+            if not side.data_loaded or not side.running:
+                return jsonify({"ok": False, "msg": "请先装载数据并开始分析"})
+            if side.source != "mobile":
+                return jsonify({"ok": False, "msg": "非移动端模式"})
+
+        if "file" not in request.files:
+            return jsonify({"ok": False, "msg": "无图像数据"})
+
+        f = request.files["file"]
+        try:
+            arr = np.frombuffer(f.read(), np.uint8)
+            frame = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+            if frame is None:
+                return jsonify({"ok": False, "msg": "无法解码图像"})
+        except Exception as e:
+            return jsonify({"ok": False, "msg": str(e)})
+
+        from processing.mobile_processor import process_mobile_frame
+        process_mobile_frame(side, frame, STATE._lock, which)
+        return jsonify({"ok": True})
+
     @app.route("/api/upload_video", methods=["POST"])
     def api_upload_video():
         """上传视频文件"""

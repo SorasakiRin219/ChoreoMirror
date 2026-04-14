@@ -7,6 +7,70 @@ let aiTimer = null;
 let provKeys = {};
 try { provKeys = window._INIT.provKeys || {}; } catch(e) {}
 let curProv = (window._INIT && window._INIT.provider) || 'anthropic';
+const mobileStreams = {};
+const mobileTimers = {};
+
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    || (navigator.maxTouchPoints && navigator.maxTouchPoints > 2)
+    || window.innerWidth < 768;
+}
+
+async function startMobileCamera(which) {
+  const video = document.getElementById(`mobile-video-${which}`);
+  const feedImg = document.getElementById(`feed-${which}`);
+  if(!video) return false;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: {ideal: 640}, height: {ideal: 480} },
+      audio: false
+    });
+    mobileStreams[which] = stream;
+    video.srcObject = stream;
+    video.style.display = 'block';
+    if(feedImg) feedImg.style.display = 'none';
+    video.onloadedmetadata = () => {
+      video.play();
+      mobileTimers[which] = setInterval(() => captureAndSend(which), 100); // 10fps
+    };
+    return true;
+  } catch(err) {
+    console.error('getUserMedia error:', err);
+    if(window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      toast('❌ 摄像头需要在 HTTPS 或 localhost 环境下使用', 'err');
+    }
+    return false;
+  }
+}
+
+function stopMobileCamera(which) {
+  const video = document.getElementById(`mobile-video-${which}`);
+  const feedImg = document.getElementById(`feed-${which}`);
+  if(mobileTimers[which]) { clearInterval(mobileTimers[which]); mobileTimers[which] = null; }
+  if(mobileStreams[which]) { mobileStreams[which].getTracks().forEach(t => t.stop()); mobileStreams[which] = null; }
+  if(video) { video.srcObject = null; video.style.display = 'none'; }
+  if(feedImg) feedImg.style.display = '';
+}
+
+function captureAndSend(which) {
+  const video = document.getElementById(`mobile-video-${which}`);
+  const canvas = document.getElementById(`mobile-canvas-${which}`);
+  if(!video || !canvas || video.readyState < 2 || video.paused || video.ended) return;
+  const ctx = canvas.getContext('2d');
+  const vw = video.videoWidth, vh = video.videoHeight;
+  const targetW = 640, targetH = 480;
+  const scale = Math.max(targetW/vw, targetH/vh);
+  const sw = targetW/scale, sh = targetH/scale;
+  const sx = (vw - sw)/2, sy = (vh - sh)/2;
+  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, targetW, targetH);
+  canvas.toBlob((blob) => {
+    if(!blob) return;
+    const fd = new FormData();
+    fd.append('file', blob, 'frame.jpg');
+    fd.append('which', which);
+    fetch('/api/upload_frame', {method: 'POST', body: fd}).catch(() => {});
+  }, 'image/jpeg', 0.75);
+}
 
 // ── Toast ──────────────────────────────────────────────────
 function toast(msg, type='ok', dur=3000) {
@@ -20,7 +84,7 @@ function toast(msg, type='ok', dur=3000) {
 function setSrc(which, src) {
   srcMap[which] = src;
   const ALIAS = {camera:'cam', video:'vid', c3d:'c3d'};
-  const prefix = which === 'a' ? 't' : 't';
+  const prefix = 't';
   ['cam','vid','c3d'].forEach(s => {
     const btn = document.getElementById(`${prefix}${which}-${s}`);
     if(btn) btn.classList.toggle('active', ALIAS[src] === s);
@@ -29,13 +93,23 @@ function setSrc(which, src) {
     if(el && s === 'cam') el.style.display = ALIAS[src] === s ? 'flex' : 'none';
     if(el && s !== 'cam') el.style.display = ALIAS[src] === s ? 'block' : 'none';
   });
-  
+
+  const camSel = document.getElementById(`${which}-cam-idx`);
+  const mobileHint = document.getElementById(`${which}-mobile-hint`);
+  if(camSel && mobileHint) {
+    if(src === 'camera' && isMobile()) { camSel.style.display = 'none'; mobileHint.style.display = 'inline'; }
+    else { camSel.style.display = ''; mobileHint.style.display = 'none'; }
+  }
+
+  let postSrc = src;
+  if(src === 'camera' && isMobile()) postSrc = 'mobile';
+
   fetch('/api/set_source', {
-    method:'POST', 
+    method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
-      which, 
-      source: src,
+      which,
+      source: postSrc,
       camera_idx: parseInt(document.getElementById(`${which}-cam-idx`).value)||0
     })
   });
@@ -70,35 +144,60 @@ async function loadData(which) {
   if(src === 'c3d') {
     const okBox = document.getElementById(`${which}-c3d-ok`);
     if(!okBox || !okBox.classList.contains('show')) {
-      toast('⚠ 请先上传 C3D 文件', 'err'); 
+      toast('⚠ 请先上传 C3D 文件', 'err');
       return;
     }
   }
-  
+
   const camIdx = parseInt(document.getElementById(`${which}-cam-idx`).value) || 0;
+  let postSrc = src;
+  if(src === 'camera' && isMobile()) postSrc = 'mobile';
+
   await fetch('/api/set_source', {
-    method: 'POST', 
+    method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({which, source: src, camera_idx: camIdx})
+    body: JSON.stringify({which, source: postSrc, camera_idx: camIdx})
   });
-  
+
   const r = await fetch('/api/load_data', {
-    method: 'POST', 
+    method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({which})
   });
   const d = await r.json();
   if(!d.ok) { toast('❌ ' + d.msg, 'err'); return; }
-  
+
   dataLoaded[which] = true;
   updateSideControls(which, true, false, 0, 0);
   updatePill(which, 'idle', '已装载，待分析');
   toast(`侧${which.toUpperCase()} 数据槽已就绪`);
   if(!pollTimer) pollTimer = setInterval(pollStatus, 500);
+
+  // 移动端摄像头：自动启动并推帧，随后自动开始分析
+  if(src === 'camera' && isMobile()) {
+    const ok = await startMobileCamera(which);
+    if(!ok) {
+      toast('❌ 无法调用摄像头，请检查权限设置', 'err');
+      await unloadData(which);
+      return;
+    }
+    const sr = await fetch('/api/start', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({which})
+    });
+    const sd = await sr.json();
+    if(sd.ok) {
+      running[which] = true;
+      updateSideControls(which, true, true);
+      updatePill(which, 'live', '分析中...');
+    }
+  }
 }
 
 async function unloadData(which) {
   if(running[which]) await stopSide(which);
+  if(isMobile() && srcMap[which] === 'camera') stopMobileCamera(which);
   const r = await fetch('/api/unload_data', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
@@ -106,7 +205,7 @@ async function unloadData(which) {
   });
   const d = await r.json();
   if(!d.ok) { toast('❌ ' + d.msg, 'err'); return; }
-  
+
   dataLoaded[which] = false;
   running[which] = false;
   updateSideControls(which, false, false);
@@ -126,9 +225,16 @@ async function startSide(which) {
   updateSideControls(which, true, true);
   updatePill(which, 'live', '分析中...');
   if(!pollTimer) pollTimer = setInterval(pollStatus, 500);
+
+  // 移动端摄像头：若未在推流，重新启动
+  if(isMobile() && srcMap[which] === 'camera' && !mobileStreams[which]) {
+    const ok = await startMobileCamera(which);
+    if(!ok) toast('❌ 无法调用摄像头', 'err');
+  }
 }
 
 async function stopSide(which) {
+  if(isMobile() && srcMap[which] === 'camera') stopMobileCamera(which);
   await fetch('/api/stop', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
@@ -198,6 +304,12 @@ function updateSideUI(which, s) {
   else if(s.data_loaded) updatePill(which, 'idle', `已装载 ${nF}帧`);
 
   updateJointMini(which, s.angles);
+
+  // 移动端摄像头：若后端已停止但前端仍在推流，自动恢复 MJPEG 显示
+  if(!s.running && isMobile() && srcMap[which] === 'camera') {
+    const video = document.getElementById(`mobile-video-${which}`);
+    if(video && video.style.display !== 'none') stopMobileCamera(which);
+  }
 }
 
 // ── Joint mini bars ────────────────────────────────────────
@@ -1673,7 +1785,16 @@ document.addEventListener('DOMContentLoaded',()=>{
     wfEl.style.cursor='pointer';
     new ResizeObserver(()=>{renderWaveform();}).observe(wfEl);
   }
-  
+
   // Initialize provider UI
   setProv(curProv);
+
+  // 移动端初始化：摄像头选项适配
+  if(isMobile()) {
+    ['a','b'].forEach(w => {
+      const camSel = document.getElementById(`${w}-cam-idx`);
+      const hint = document.getElementById(`${w}-mobile-hint`);
+      if(camSel && hint) { camSel.style.display = 'none'; hint.style.display = 'inline'; }
+    });
+  }
 });

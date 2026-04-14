@@ -1189,3 +1189,245 @@ select:focus, input:focus {
   overflow-y: auto;
   margin-top: 8px;
 }
+@media (max-width: 768px) {
+  #app {
+    padding: 0 12px 12px;
+  }
+
+  header {
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 4px;
+    position: relative;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+    justify-content: center;
+  }
+  .logo::before {
+    font-size: 1.3rem;
+  }
+
+  .hdr-status {
+    position: static;
+    transform: none;
+    justify-content: center;
+    order: 0;
+    gap: 8px;
+  }
+
+  .side-pill {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  header > div:last-child {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .nav-tabs {
+    justify-content: center;
+  }
+  .nav-tab {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+
+  .arena {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .side-panel {
+    min-height: auto;
+    border-radius: var(--radius-md);
+  }
+
+  .vid-wrap {
+    padding-bottom: 56.25%; /* 手机摄像头通常为 16:9 */
+  }
+
+  .src-ctrl {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .tab-row {
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+    min-height: 44px;
+  }
+
+  .ctrl-row {
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 12px 18px;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+
+  .upload-lbl {
+    padding: 12px 14px;
+    min-height: 44px;
+  }
+
+  .data-stats {
+    gap: 8px;
+  }
+  .stat-card {
+    padding: 10px;
+  }
+  .stat-value {
+    font-size: 1.1rem;
+  }
+
+  .joint-mini {
+    min-height: 140px;
+    padding: 12px;
+  }
+
+  .cmp-panel {
+    max-height: none;
+    gap: 16px;
+    order: -1;
+  }
+
+  .glass-card {
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
+
+  .prov-row {
+    gap: 6px;
+    justify-content: center;
+  }
+  .pbtn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    min-height: 36px;
+  }
+
+  .score-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .ring-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+  .ring-svg {
+    width: 100px;
+    height: 100px;
+  }
+  #score-num {
+    font-size: 1.6rem;
+  }
+
+  .ai-panel {
+    padding: 16px;
+  }
+  .ai-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  #extra-ctx {
+    padding: 12px 16px;
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    max-width: none;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+  }
+
+  /* 分析页面移动端 */
+  #analysis-page {
+    height: auto;
+    overflow: visible;
+    gap: 12px;
+  }
+
+  #analysis-page > div[style*="display:grid"] {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    height: auto;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  #an-toolbar {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  #preview-wrap {
+    min-height: 220px;
+    padding-bottom: 56.25%;
+  }
+
+  #analysis-page .glass-card:first-child,
+  #analysis-page > div[style*="display:grid"] > div:first-child {
+    min-height: auto;
+  }
+
+  #an-joint-table {
+    max-height: 160px;
+  }
+
+  /* 时间轴控件移动端 */
+  #tl-track-wrap {
+    height: 40px;
+  }
+  #tl-thumb {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* 对比条区域 */
+  .cmp-panel .glass-card:nth-of-type(4) {
+    min-height: 220px;
+    max-height: 320px;
+  }
+
+  /* 对称性卡片 */
+  .cmp-panel .glass-card:nth-of-type(5) {
+    min-height: 220px;
+    max-height: 280px;
+  }
+
+  /* 文件输入在移动端完全隐藏 */
+  input[type="file"] {
+    display: none !important;
+  }
+
+  /* 下拉框与输入框在移动端更易点击 */
+  select, input[type="number"], input[type="text"], .api-inp {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+
+  /* 建议框文字稍大，更易读 */
+  .advice-box {
+    font-size: 0.9rem;
+    padding: 16px;
+  }
+}
