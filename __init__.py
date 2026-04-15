@@ -6,7 +6,7 @@
 
 # 版本信息
 __version__ = "3.1.0"
-__author__ = "Dance Analyser Team"
+__author__ = "Rin"
 
 # 导出主要类（延迟导入，避免循环依赖）
 def get_app_state():
