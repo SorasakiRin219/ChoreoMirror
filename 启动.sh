@@ -1,7 +1,7 @@
 #!/bin/bash
 echo ""
 echo "======================================"
-echo "  Dance Analyser - Startup"
+echo "   choreomirror - Startup"
 echo "======================================"
 echo ""
 

@@ -3,7 +3,7 @@ cd /d "%~dp0"
 
 echo.
 echo  ==========================================
-echo   Dance Analyser - Startup
+echo   choreomirror - Startup
 echo  ==========================================
 echo.
 
