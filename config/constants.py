@@ -89,7 +89,7 @@ PRESET_MAPS = {
 
         # 腕关节（可选）：肘 - 腕外侧 - 手背（近似腕关节角度）
         "left_wrist":     {"markers": ["LElbowOut", "LWristOut", "LHand"], "cn_name": "左腕"},
-        "right_wrist":    {"markers": ["REIbowOut", "RWristOut", "RHand"], "cn_name": "右腕"},
+        "right_wrist":    {"markers": ["RElbowOut", "RWristOut", "RHand"], "cn_name": "右腕"},
     },
 }
 

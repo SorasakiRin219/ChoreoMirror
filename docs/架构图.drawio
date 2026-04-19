@@ -1,0 +1,872 @@
+<mxfile host="app.diagrams.net" pages="9">
+  <diagram name="模块依赖图" id="q2BYP0l0MTpp3DsHqxOk">
+    <mxGraphModel dx="1400" dy="1092" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" value="&lt;b&gt;镜影鉴姿-舞蹈动作分析系统 v3.1&lt;/b&gt;&lt;br&gt;模块依赖图" vertex="1">
+          <mxGeometry height="40" width="400" x="500" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_input" parent="1" style="swimlane;horizontal=1;startSize=40;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;fontSize=14;fontStyle=1" value="输入层" vertex="1">
+          <mxGeometry height="100" width="1320" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="n_in_cam" parent="sl_input" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="本地摄像头" vertex="1">
+          <mxGeometry height="40" width="120" x="40" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n_in_vid" parent="sl_input" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="视频文件" vertex="1">
+          <mxGeometry height="40" width="120" x="200" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n_in_c3d" parent="sl_input" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="C3D 动捕文件" vertex="1">
+          <mxGeometry height="40" width="120" x="360" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n_in_mob" parent="sl_input" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="移动端推流" vertex="1">
+          <mxGeometry height="40" width="120" x="520" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_web" parent="1" style="swimlane;horizontal=1;startSize=40;fillColor=#e1d5e7;fontColor=#333333;strokeColor=#9673a6;fontSize=14;fontStyle=1" value="Web 服务层 (Flask)" vertex="1">
+          <mxGeometry height="100" width="1320" x="40" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="n_web_routes" parent="sl_web" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="REST API&lt;br&gt;(routes.py)" vertex="1">
+          <mxGeometry height="40" width="120" x="200" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n_web_stream" parent="sl_web" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="MJPEG Stream&lt;br&gt;(streaming.py)" vertex="1">
+          <mxGeometry height="40" width="120" x="360" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_proc" parent="1" style="swimlane;horizontal=1;startSize=40;fillColor=#ffe6cc;fontColor=#333333;strokeColor=#d79b00;fontSize=14;fontStyle=1" value="处理层 (后台线程)" vertex="1">
+          <mxGeometry height="140" width="1320" x="40" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="n_proc_a" parent="sl_proc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" value="SideProcessor A" vertex="1">
+          <mxGeometry height="50" width="140" x="120" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="n_mp_a" parent="sl_proc" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="MediaPipe" vertex="1">
+          <mxGeometry height="40" width="80" x="150" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n_proc_b" parent="sl_proc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" value="SideProcessor B" vertex="1">
+          <mxGeometry height="50" width="140" x="400" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="n_mp_b" parent="sl_proc" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" value="MediaPipe" vertex="1">
+          <mxGeometry height="40" width="80" x="430" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n_proc_c3d" parent="sl_proc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="C3DLoader" vertex="1">
+          <mxGeometry height="50" width="120" x="680" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="n_proc_mob" parent="sl_proc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="MobileProcessor" vertex="1">
+          <mxGeometry height="50" width="120" x="840" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_anal" parent="1" style="swimlane;horizontal=1;startSize=40;fillColor=#f8cecc;fontColor=#333333;strokeColor=#b85450;fontSize=14;fontStyle=1" value="分析层 (core + temporal)" vertex="1">
+          <mxGeometry height="120" width="1320" x="40" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="n_anal_geo" parent="sl_anal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="关节角度&lt;br&gt;(geometry)" vertex="1">
+          <mxGeometry height="40" width="100" x="120" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n_anal_sym" parent="sl_anal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="对称性&lt;br&gt;(symmetry)" vertex="1">
+          <mxGeometry height="40" width="100" x="260" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n_anal_cmp" parent="sl_anal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="对比评分&lt;br&gt;(comparison)" vertex="1">
+          <mxGeometry height="40" width="100" x="400" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n_anal_score" parent="sl_anal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="评分&lt;br&gt;(scoring)" vertex="1">
+          <mxGeometry height="40" width="100" x="540" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n_anal_dtw" parent="sl_anal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="DTW 对齐&lt;br&gt;(temporal)" vertex="1">
+          <mxGeometry height="40" width="120" x="680" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_ai" parent="1" style="swimlane;horizontal=1;startSize=40;fillColor=#e1d5e7;fontColor=#333333;strokeColor=#9673a6;fontSize=14;fontStyle=1" value="AI 提供商 (ai/providers.py)" vertex="1">
+          <mxGeometry height="120" width="360" x="980" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="n_ai_claude" parent="sl_ai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" value="Claude" vertex="1">
+          <mxGeometry height="35" width="60" x="20" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n_ai_ds" parent="sl_ai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" value="DeepSeek" vertex="1">
+          <mxGeometry height="35" width="70" x="90" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n_ai_gpt" parent="sl_ai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" value="GPT" vertex="1">
+          <mxGeometry height="35" width="50" x="170" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n_ai_qwen" parent="sl_ai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" value="Qwen" vertex="1">
+          <mxGeometry height="35" width="50" x="230" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="n_ai_ollama" parent="sl_ai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" value="Ollama" vertex="1">
+          <mxGeometry height="35" width="60" x="290" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_state" parent="1" style="swimlane;horizontal=1;startSize=40;fillColor=#fff2cc;fontColor=#333333;strokeColor=#d6b656;fontSize=14;fontStyle=1" value="状态管理层 (processing)" vertex="1">
+          <mxGeometry height="100" width="1320" x="40" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="n_state_a" parent="sl_state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="SideState A" vertex="1">
+          <mxGeometry height="40" width="120" x="180" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n_state_app" parent="sl_state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1" value="AppState&lt;br&gt;(全局状态)" vertex="1">
+          <mxGeometry height="40" width="120" x="340" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n_state_b" parent="sl_state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="SideState B" vertex="1">
+          <mxGeometry height="40" width="120" x="500" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sl_out" parent="1" style="swimlane;horizontal=1;startSize=40;fillColor=#d5e8d4;fontColor=#333333;strokeColor=#82b366;fontSize=14;fontStyle=1" value="输出层" vertex="1">
+          <mxGeometry height="100" width="1320" x="40" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="n_out_ui" parent="sl_out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Web 前端&lt;br&gt;(index.html + Canvas)" vertex="1">
+          <mxGeometry height="40" width="140" x="200" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n_out_ai" parent="sl_out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="AI 建议" vertex="1">
+          <mxGeometry height="40" width="120" x="400" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="n_out_report" parent="sl_out" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="JSON 报告导出" vertex="1">
+          <mxGeometry height="40" width="120" x="560" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="n_in_cam" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_web_routes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="n_in_vid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="n_web_routes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="n_in_c3d" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_proc_c3d">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="420" y="310" />
+              <mxPoint x="740" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="n_in_mob" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_proc_mob">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="310" />
+              <mxPoint x="900" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="n_web_routes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_state_app">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="n_state_a" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="n_proc_a">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="n_state_b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="n_proc_b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="n_proc_a" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="n_anal_geo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="470" />
+              <mxPoint x="145" y="470" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="n_proc_b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="n_anal_geo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="470" y="470" />
+              <mxPoint x="195" y="470" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="n_proc_mob" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_anal_geo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="460" />
+              <mxPoint x="170" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="n_proc_c3d" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_anal_geo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="460" />
+              <mxPoint x="170" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="n_anal_geo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="n_anal_sym">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="n_anal_sym" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="n_anal_cmp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="n_anal_cmp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="n_anal_score">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="n_anal_score" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="n_anal_dtw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="n_anal_cmp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_state_app">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="450" y="610" />
+              <mxPoint x="400" y="610" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="n_state_app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_out_ui">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="n_state_app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_out_report">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="n_web_stream" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.86;entryY=0;entryDx=0;entryDy=0;" target="n_out_ui">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="n_anal_dtw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="n_ai_claude">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="n_ai_claude" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n_out_ai">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1020" y="730" />
+              <mxPoint x="460" y="730" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="核心数据流" id="qeO3ZEfPT6Sz0rG9u-4M">
+    <mxGraphModel dx="1167" dy="910" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="600" math="0" shadow="0">
+      <root>
+        <mxCell id="df0" />
+        <mxCell id="df1" parent="df0" />
+        <mxCell id="mQFNwHPbthUkNIpnM5B5-8" parent="df1" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" value="" vertex="1">
+          <mxGeometry height="80" width="120" x="190" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="df_title" parent="df1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" value="&lt;b&gt;核心数据流：摄像头 → 姿态检测 → 骨架渲染 → 对比分析 → AI 建议&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="700" x="270" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="df_src_cam" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="本地摄像头" vertex="1">
+          <mxGeometry height="40" width="110" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="df_src_vid" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="视频文件" vertex="1">
+          <mxGeometry height="40" width="110" x="40" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="df_src_c3d" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="C3D 动捕" vertex="1">
+          <mxGeometry height="40" width="110" x="40" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="df_src_mob" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="移动端推流" vertex="1">
+          <mxGeometry height="40" width="110" x="40" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="df_mp_b" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" value="MediaPipe&lt;br&gt;姿态检测" vertex="1">
+          <mxGeometry height="50" width="120" x="380" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="df_appstate" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1" value="AppState&lt;br&gt;&lt;br&gt;双侧实时对比&lt;br&gt;(comparison.py)" vertex="1">
+          <mxGeometry height="80" width="140" x="420" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="df_score" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="评分&lt;br&gt;(scoring.py)" vertex="1">
+          <mxGeometry height="50" width="100" x="600" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="df_dtw" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="DTW 时序对齐&lt;br&gt;(temporal)" vertex="1">
+          <mxGeometry height="50" width="100" x="680" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="df_ai" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1" value="AI 建议&lt;br&gt;(providers.py)" vertex="1">
+          <mxGeometry height="50" width="120" x="860" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="df_web" parent="df1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" value="Web 前端&lt;br&gt;(Canvas + Chart)" vertex="1">
+          <mxGeometry height="50" width="120" x="860" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="de1" edge="1" parent="df1" source="df_src_cam" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="df_mp_b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="de2" edge="1" parent="df1" source="df_src_vid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="df_mp_b">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="210" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="de3" edge="1" parent="df1" source="df_src_c3d" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="df_mp_b">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="220" />
+              <mxPoint x="200" y="175" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="de4" edge="1" parent="df1" source="df_src_mob" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="df_mp_b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="de7" edge="1" parent="df1" source="df_mp_b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="mQFNwHPbthUkNIpnM5B5-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="315" />
+              <mxPoint x="140" y="315" />
+              <mxPoint x="140" y="420" />
+            </Array>
+            <mxPoint x="340" y="200" as="sourcePoint" />
+            <mxPoint x="180" y="445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="de9" edge="1" parent="df1" source="mQFNwHPbthUkNIpnM5B5-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=0.381;exitY=0.011;exitDx=0;exitDy=0;exitPerimeter=0;" target="df_appstate">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="660" y="100" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="de10" edge="1" parent="df1" source="mQFNwHPbthUkNIpnM5B5-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="df_appstate">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="660" y="275" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="de11" edge="1" parent="df1" source="df_appstate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="df_score">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="de12" edge="1" parent="df1" source="df_appstate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="df_dtw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="de13" edge="1" parent="df1" source="df_score" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="df_ai">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="315" />
+              <mxPoint x="860" y="315" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="de14" edge="1" parent="df1" source="df_dtw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="df_web">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="de15" edge="1" parent="df1" source="df_ai" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="df_web">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="df_mjpeg" parent="df1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2" value="MJPEG 实时流" vertex="1">
+          <mxGeometry height="20" width="90" x="210" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="mQFNwHPbthUkNIpnM5B5-12" edge="1" parent="df1" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="df_appstate" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="550" y="540" as="sourcePoint" />
+            <mxPoint x="815" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mQFNwHPbthUkNIpnM5B5-13" edge="1" parent="df1" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="860" y="540" as="sourcePoint" />
+            <mxPoint x="550" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mQFNwHPbthUkNIpnM5B5-14" edge="1" parent="df1" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="df_web" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="860" y="540" as="sourcePoint" />
+            <mxPoint x="700" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="评分系统架构" id="Db_9RL4q_C5lkQ0PO4kW">
+    <mxGraphModel dx="1050" dy="819" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="sa0" />
+        <mxCell id="sa1" parent="sa0" />
+        <mxCell id="sa_title" parent="sa1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" value="&lt;b&gt;评分系统架构 (core/scoring.py + temporal/timeseries.py)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="500" x="520" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_input" parent="sa1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入：关节角度偏差值&lt;br&gt;d = |θ_student - θ_standard|&lt;br&gt;单位：度 (°)" vertex="1">
+          <mxGeometry height="60" width="160" x="20" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_func1" parent="sa1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" value="deviation_grade(d)&lt;br&gt;等级评定函数&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="180" width="220" x="250" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_formula1" parent="sa1" style="text;html=1;strokeColor=#b85450;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" value="if d ≤ 5°:        grade = excellent&lt;br&gt;if 5° &amp;lt; d ≤ 15°:  grade = good&lt;br&gt;if 15° &amp;lt; d ≤ 30°: grade = warning&lt;br&gt;if d &amp;gt; 30°:       grade = poor" vertex="1">
+          <mxGeometry height="70" width="200" x="260" y="165" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_func2" parent="sa1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1" value="score_from_dev(d)&lt;br&gt;指数衰减评分函数&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="200" width="220" x="570" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_formula2" parent="sa1" style="text;html=1;strokeColor=#9673a6;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" value="score = 100 × exp(-d/τ)&lt;br&gt;&lt;br&gt;τ = 25° (时间常数)&lt;br&gt;&lt;br&gt;特性：&lt;br&gt;d=0°   → 100 分&lt;br&gt;d=25°  → 36.8 分 (1/e)&lt;br&gt;d=50°  → 13.5 分 (1/e²)" vertex="1">
+          <mxGeometry height="100" width="200" x="580" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_out1" parent="sa1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出 1：等级&lt;br&gt;(excellent/good/warning/poor)" vertex="1">
+          <mxGeometry height="50" width="180" x="820" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_out2" parent="sa1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出 2：评分&lt;br&gt;(0-100)" vertex="1">
+          <mxGeometry height="50" width="140" x="840" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_weighted_title" parent="sa1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" value="&lt;b&gt;【加权评分】(temporal/timeseries.py)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="25" width="300" x="370" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_weighted_formula" parent="sa1" style="text;html=1;strokeColor=#9673a6;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=1" value="S = 0.60 × r_score + 0.30 × dtw_score + 0.10 × rmsd_score&lt;br&gt;&lt;br&gt;【r_score：形态相似度】&lt;br&gt;• 含义：衡量学生与参考动作的运动轨迹形状是否一致&lt;br&gt;• Z-score 标准化：z(x) = (x - x̄) / σ，去除均值与尺度&lt;br&gt;• Pearson 相关系数：r = Σ((xᵢ - x̄)(yᵢ - ȳ)) / √(Σ(xᵢ - x̄)² × Σ(yᵢ - ȳ)²)&lt;br&gt;• 转换：r_score = 50 × (r + 1)，将 [-1, 1] 映射到 [0, 100]&lt;br&gt;• 意义：r=1 完全同步，r=-1 完全相反&lt;br&gt;&lt;br&gt;【dtw_score：时序对齐质量】&lt;br&gt;• 含义：衡量两个动作序列在时间轴上的对齐程度&lt;br&gt;• 代价矩阵：D[i,j] = (a[i] - b[j])² + min{D[i-1,j], D[i,j-1], D[i-1,j-1]}&lt;br&gt;• 归一化距离：dtw = D[n-1,m-1] / (n + m)&lt;br&gt;• 转换：dtw_score = 100 × exp(-dtw/0.8)&lt;br&gt;• 意义：距离越小得分越高，反映节奏匹配度&lt;br&gt;&lt;br&gt;【rmsd_score：角度偏差】&lt;br&gt;• 含义：衡量关节角度的平均偏差幅度&lt;br&gt;• 计算：rmsd = √(Σ(aᵢ - bᵢ)² / n)，单位：度&lt;br&gt;• 转换：rmsd_score = 100 × exp(-rmsd/25°)&lt;br&gt;• 意义：偏差越小得分越高，25°为衰减常数" vertex="1">
+          <mxGeometry height="257" width="340" x="200" y="413" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_weighted_note" parent="sa1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" value="设计原理：&lt;br&gt;• 60% 相关性：强调动作形态相似度&lt;br&gt;• 30% DTW：考虑时序对齐质量&lt;br&gt;• 10% RMSD：弱化绝对角度误差惩罚" vertex="1">
+          <mxGeometry height="60" width="350" x="550" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_e1" edge="1" parent="sa1" source="sa_input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="sa_func1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_e2" edge="1" parent="sa1" source="sa_input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="sa_func2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="540" y="340" />
+              <mxPoint x="540" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sa_e3" edge="1" parent="sa1" source="sa_func1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sa_out1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="540" y="170" />
+              <mxPoint x="540" y="70" />
+              <mxPoint x="910" y="70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sa_e4" edge="1" parent="sa1" source="sa_func2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="sa_out2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sa_note" parent="sa1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" value="&lt;b&gt;评分说明：&lt;/b&gt;&lt;br&gt;• 等级评定用于快速判断动作质量&lt;br&gt;• 指数衰减公式确保小偏差获得高分奖励&lt;br&gt;• 两函数配合使用，提供完整评价" vertex="1">
+          <mxGeometry height="60" width="220" x="820" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="3I79ouO1QFhC_92RuL7g-0" edge="1" parent="sa1" source="sa_func1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" target="sa_func1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3I79ouO1QFhC_92RuL7g-1" edge="1" parent="sa1" source="sa_func1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="sa_func1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="390" y="20" />
+              <mxPoint x="515" y="20" />
+              <mxPoint x="515" y="290" />
+              <mxPoint x="390" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="对比分析架构" id="7wISkBHixGG5t7cAacBR">
+    <mxGraphModel dx="1201" dy="819" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="ca0" />
+        <mxCell id="ca1" parent="ca0" />
+        <mxCell id="ca_title" parent="ca1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" value="&lt;b&gt;对比分析架构 (core/comparison.py)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="500" x="180" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_in_a" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 A：学生关节角度&lt;br&gt;θ_A = {joint₁, joint₂, ...}" vertex="1">
+          <mxGeometry height="60" width="160" x="50" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_in_b" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 B：参考关节角度&lt;br&gt;θ_B = {joint₁, joint₂, ...}" vertex="1">
+          <mxGeometry height="60" width="160" x="50" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_func" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" value="compare_sides(θ_A, θ_B)&lt;br&gt;逐关节对比函数" vertex="1">
+          <mxGeometry height="60" width="180" x="250" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_loop" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="for joint in joints:" vertex="1">
+          <mxGeometry height="40" width="140" x="460" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_calc1" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="偏差计算&lt;br&gt;d_j = |θ_j(A) - θ_j(B)|" vertex="1">
+          <mxGeometry height="50" width="140" x="460" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_calc2" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="评分计算&lt;br&gt;s_j = 100 × exp(-d_j/25)" vertex="1">
+          <mxGeometry height="50" width="140" x="460" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_calc3" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="等级评定&lt;br&gt;g_j = deviation_grade(d_j)" vertex="1">
+          <mxGeometry height="50" width="140" x="460" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_calc4" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="方向判断&lt;br&gt;if θ_j(A) &amp;gt; θ_j(B): direction = 偏大&lt;br&gt;else: direction = 偏小" vertex="1">
+          <mxGeometry height="50" width="140" x="460" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_out_joints" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出：各关节详情&lt;br&gt;{joint: {current, standard,&lt;br&gt;deviation, grade, score,&lt;br&gt;direction}}" vertex="1">
+          <mxGeometry height="70" width="160" x="650" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_out_overall" parent="ca1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出：综合评分&lt;br&gt;S = Σ(w_j × s_j) / Σw_j&lt;br&gt;w_j = 1 (等权重)" vertex="1">
+          <mxGeometry height="60" width="160" x="650" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_e1" edge="1" parent="ca1" source="ca_in_a" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="ca_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_e2" edge="1" parent="ca1" source="ca_in_b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="ca_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_e3" edge="1" parent="ca1" source="ca_func" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ca_loop">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_e4" edge="1" parent="ca1" source="ca_loop" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ca_calc1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_e5" edge="1" parent="ca1" source="ca_calc1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ca_calc2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_e6" edge="1" parent="ca1" source="ca_calc2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ca_calc3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_e7" edge="1" parent="ca1" source="ca_calc3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ca_calc4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_e8" edge="1" parent="ca1" source="ca_loop" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ca_out_joints">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ca_e9" edge="1" parent="ca1" source="ca_calc4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ca_out_overall">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="650" y="415" />
+              <mxPoint x="650" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ca_note" parent="ca1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" value="&lt;b&gt;设计原理：&lt;/b&gt;&lt;br&gt;• 逐关节对比：独立评估每个关节的准确性&lt;br&gt;• 加权平均：可配置各关节权重，默认等权重&lt;br&gt;• 方向判断：明确偏差方向，便于针对性改进" vertex="1">
+          <mxGeometry height="60" width="260" x="160" y="315" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="AI 对比意见架构" id="N0MUBj3jiQpxcw3a9faG">
+    <mxGraphModel dx="1050" dy="819" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="ia0" />
+        <mxCell id="ia1" parent="ia0" />
+        <mxCell id="ia_title" parent="ia1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" value="&lt;b&gt;AI 对比意见架构 (ai/prompts.py + providers.py)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="600" x="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_in1" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 1：时序对比结果&lt;br&gt;{joints, overall_score,&lt;br&gt;region_scores}" vertex="1">
+          <mxGeometry height="60" width="150" x="50" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_in2" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 2：历史数据&lt;br&gt;hist_a, hist_b" vertex="1">
+          <mxGeometry height="50" width="150" x="50" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_in3" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 3：对称性分析&lt;br&gt;sym_a, sym_b" vertex="1">
+          <mxGeometry height="50" width="150" x="50" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_func" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" value="build_prompt_ts()&lt;br&gt;构建结构化提示词" vertex="1">
+          <mxGeometry height="100" width="180" x="370" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_prompt1" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="1. 整体相似度&lt;br&gt;评分 + 对齐情况" vertex="1">
+          <mxGeometry height="40" width="160" x="360" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_prompt2" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="2. 各关节对比&lt;br&gt;按评分升序排列" vertex="1">
+          <mxGeometry height="40" width="160" x="360" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_prompt3" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="3. 分段详情&lt;br&gt;偏差&amp;gt;5°的时段" vertex="1">
+          <mxGeometry height="40" width="160" x="360" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_prompt4" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="4. 对称性数据&lt;br&gt;左右对比" vertex="1">
+          <mxGeometry height="40" width="160" x="360" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_provider" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1" value="AIProvider&lt;br&gt;调用 AI 服务&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="210" width="180" x="590" y="255" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_provider1" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" value="Claude" vertex="1">
+          <mxGeometry height="25" width="70" x="680" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_provider2" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" value="GPT" vertex="1">
+          <mxGeometry height="25" width="70" x="610" y="415" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_provider3" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" value="Qwen" vertex="1">
+          <mxGeometry height="25" width="70" x="680" y="415" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_provider4" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" value="Ollama" vertex="1">
+          <mxGeometry height="25" width="70" x="610" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_out" parent="ia1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出：AI 分析建议&lt;br&gt;中文专业分析 (≤550 字)&lt;br&gt;&lt;br&gt;• 整体相似度&lt;br&gt;• 主要差异时段&lt;br&gt;• 速度/节奏差异&lt;br&gt;• 训练建议&lt;br&gt;• 安全提示" vertex="1">
+          <mxGeometry height="140" width="180" x="830" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_e1" edge="1" parent="ia1" source="ia_in1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="ia_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_e2" edge="1" parent="ia1" source="ia_in2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ia_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_e3" edge="1" parent="ia1" source="ia_in3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="ia_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_e4" edge="1" parent="ia1" source="ia_func" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ia_prompt1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_e5" edge="1" parent="ia1" source="ia_prompt1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ia_prompt2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_e6" edge="1" parent="ia1" source="ia_prompt2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ia_prompt3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_e7" edge="1" parent="ia1" source="ia_prompt3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ia_prompt4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ia_e8" edge="1" parent="ia1" source="ia_prompt4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="ia_provider">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="540" y="460" />
+              <mxPoint x="540" y="360" />
+            </Array>
+            <mxPoint x="540" y="460" as="sourcePoint" />
+            <mxPoint x="660" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ia_e9" edge="1" parent="ia1" source="ia_provider" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ia_out">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="820" y="360" />
+              <mxPoint x="820" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ia_note" parent="ia1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" value="&lt;b&gt;设计原理：&lt;/b&gt;&lt;br&gt;• 结构化提示词：提供清晰的数据上下文&lt;br&gt;• 多 AI 支持：可切换不同模型&lt;br&gt;• 专业分析：生成中文训练建议" vertex="1">
+          <mxGeometry height="50" width="260" x="590" y="175" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="时间序列分析架构" id="PKbzkM-DDt4scknuKmKp">
+    <mxGraphModel dx="1050" dy="819" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="ta0" />
+        <mxCell id="ta1" parent="ta0" />
+        <mxCell id="ta_title" parent="ta1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" value="&lt;b&gt;时间序列分析架构 (temporal/timeseries.py)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="600" x="400" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_in1" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 A：学生历史&lt;br&gt;hist_a = [&lt;br&gt;  {&#39;angles&#39;: {...}, &#39;t&#39;: ...},&lt;br&gt;  ...&lt;br&gt;]" vertex="1">
+          <mxGeometry height="70" width="150" x="190" y="305" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_in2" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 B：参考历史&lt;br&gt;hist_b = [&lt;br&gt;  {&#39;angles&#39;: {...}, &#39;t&#39;: ...},&lt;br&gt;  ...&lt;br&gt;]" vertex="1">
+          <mxGeometry height="70" width="150" x="190" y="395" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_func" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" value="compare_timeseries(hist_a, hist_b)&lt;br&gt;两阶段时序对比" vertex="1">
+          <mxGeometry height="70" width="180" x="400" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_prep" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="预处理&lt;br&gt;fill_nan()&lt;br&gt;填充缺失值" vertex="1">
+          <mxGeometry height="60" width="140" x="450" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_align" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1" value="两阶段对齐&lt;br&gt;best_align_joint()" vertex="1">
+          <mxGeometry height="100" width="160" x="450" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_stage1" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" value="阶段一：滑动窗口&lt;br&gt;找最优起始偏移" vertex="1">
+          <mxGeometry height="40" width="140" x="460" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_stage2" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" value="阶段二：DTW&lt;br&gt;规整路径采样" vertex="1">
+          <mxGeometry height="40" width="140" x="460" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_seg" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="分段差异&lt;br&gt;segment_diff()&lt;br&gt;4 个时间窗口" vertex="1">
+          <mxGeometry height="70" width="140" x="640" y="115" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_score" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="综合评分 (加权)&lt;br&gt;S = 0.60 × r_score + 0.30 × dtw_score + 0.10 × rmsd_score&lt;br&gt;&lt;br&gt;其中：&lt;br&gt;r_score = 50 × (r + 1)&lt;br&gt;dtw_score = 100 × exp(-dtw/0.8)&lt;br&gt;rmsd_score = 100 × exp(-rmsd/25)" vertex="1">
+          <mxGeometry height="240" width="160" x="640" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_out1" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="关节级评分&lt;br&gt;各关节：score, grade,&lt;br&gt;r, rmsd, dtw_score" vertex="1">
+          <mxGeometry height="60" width="140" x="840" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_out2" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="部位级评分&lt;br&gt;上身/核心/下肢&lt;br&gt;综合相似度" vertex="1">
+          <mxGeometry height="60" width="140" x="840" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_out3" parent="ta1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="峰值差异&lt;br&gt;最大偏差时段&lt;br&gt;及方向" vertex="1">
+          <mxGeometry height="60" width="140" x="840" y="305" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_e1" edge="1" parent="ta1" source="ta_in1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="ta_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_e2" edge="1" parent="ta1" source="ta_in2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="ta_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_e3" edge="1" parent="ta1" source="ta_func" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ta_prep">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="385" />
+              <mxPoint x="600" y="320" />
+              <mxPoint x="430" y="320" />
+              <mxPoint x="430" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ta_e4" edge="1" parent="ta1" source="ta_prep" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ta_align">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_e5" edge="1" parent="ta1" source="ta_align" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ta_seg">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_e6" edge="1" parent="ta1" source="ta_align" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ta_score">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_e7" edge="1" parent="ta1" source="ta_seg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ta_out1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_e8" edge="1" parent="ta1" source="ta_score" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ta_out2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_e9" edge="1" parent="ta1" source="ta_score" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ta_out3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ta_note" parent="ta1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" value="&lt;b&gt;说明：&lt;/b&gt;&lt;br&gt;• 两阶段对齐实现分段速度归一&lt;br&gt;• DTW 路径采样得到真正对齐序列&lt;br&gt;• 相关性权重 60%，强调形态相似度" vertex="1">
+          <mxGeometry height="50" width="220" x="200" y="160" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="DTW 时序规整算法" id="dtw_algo">
+    <mxGraphModel dx="1050" dy="819" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="dtw0" />
+        <mxCell id="dtw1" parent="dtw0" />
+        <mxCell id="dtw_title" parent="dtw1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" value="&lt;b&gt;DTW 时序规整算法 (temporal/dtw.py)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="500" x="250" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_in1" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 A：序列 a&lt;br&gt;shape: (na,)" vertex="1">
+          <mxGeometry height="50" width="140" x="50" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_in2" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 B：序列 b&lt;br&gt;shape: (nb,)" vertex="1">
+          <mxGeometry height="50" width="140" x="50" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_func" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" value="dtw_path(a, b, band_frac=0.3)&lt;br&gt;完整 DTW 算法" vertex="1">
+          <mxGeometry height="70" width="180" x="240" y="175" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_param" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="参数：&lt;br&gt;band_frac = 0.3&lt;br&gt;(Sakoe-Chiba 带宽)" vertex="1">
+          <mxGeometry height="60" width="140" x="240" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_dp" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="前向 DP&lt;br&gt;计算累积代价矩阵 D&lt;br&gt;&lt;br&gt;D[i,j] = cost + min(D[i-1,j], D[i,j-1], D[i-1,j-1])" vertex="1">
+          <mxGeometry height="100" width="160" x="460" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_cost" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="代价函数&lt;br&gt;cost = (a[i] - b[j])²" vertex="1">
+          <mxGeometry height="60" width="140" x="700" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_back" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="回溯&lt;br&gt;从 D[na-1, nb-1] 到 D[0,0]&lt;br&gt;得到规整路径" vertex="1">
+          <mxGeometry height="80" width="140" x="460" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_sample" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="等密度采样&lt;br&gt;N_PATH = 200&lt;br&gt;沿路径均匀采样" vertex="1">
+          <mxGeometry height="70" width="140" x="360" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_out1" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出：归一化距离&lt;br&gt;dist = D[na-1, nb-1] / (na + nb)" vertex="1">
+          <mxGeometry height="60" width="160" x="700" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_out2" parent="dtw1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出：规整路径&lt;br&gt;path_i: A 的帧索引数组&lt;br&gt;path_j: B 的帧索引数组&lt;br&gt;length = 200" vertex="1">
+          <mxGeometry height="80" width="160" x="360" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_e1" edge="1" parent="dtw1" source="dtw_in1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="dtw_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_e2" edge="1" parent="dtw1" source="dtw_in2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="dtw_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_e3" edge="1" parent="dtw1" source="dtw_func" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="dtw_dp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_e4" edge="1" parent="dtw1" source="dtw_dp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="dtw_cost">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_e5" edge="1" parent="dtw1" source="dtw_dp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="dtw_back">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_e6" edge="1" parent="dtw1" source="dtw_back" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="dtw_sample">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_e7" edge="1" parent="dtw1" source="dtw_dp" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="dtw_out1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="650" y="175" />
+              <mxPoint x="650" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dtw_e8" edge="1" parent="dtw1" source="dtw_sample" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="dtw_out2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dtw_note" parent="dtw1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" value="&lt;b&gt;说明：&lt;/b&gt;&lt;br&gt;• 允许长度不同的序列对齐&lt;br&gt;• Sakoe-Chiba 带宽限制搜索空间&lt;br&gt;• 等密度采样保证输出长度固定" vertex="1">
+          <mxGeometry height="60" width="220" x="710" y="220" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="全局对齐算法" id="global_align">
+    <mxGraphModel dx="1400" dy="1092" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="ga0" />
+        <mxCell id="ga1" parent="ga0" />
+        <mxCell id="ga_title" parent="ga1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" value="&lt;b&gt;全局对齐算法 (temporal/alignment.py)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="500" x="90" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_in1" parent="ga1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 A：学生历史&lt;br&gt;hist_a = [&lt;br&gt;  {&#39;angles&#39;: {...}, &#39;t&#39;: ...},&lt;br&gt;  ...&lt;br&gt;]" vertex="1">
+          <mxGeometry height="70" width="150" x="50" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_in2" parent="ga1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="输入 B：参考历史&lt;br&gt;hist_b = [&lt;br&gt;  {&#39;angles&#39;: {...}, &#39;t&#39;: ...},&lt;br&gt;  ...&lt;br&gt;]" vertex="1">
+          <mxGeometry height="70" width="150" x="50" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_func" parent="ga1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1" value="composite_global_align(hist_a, hist_b)&lt;br&gt;全局两阶段对齐" vertex="1">
+          <mxGeometry height="70" width="180" x="240" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_build" parent="ga1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="构建合成信号&lt;br&gt;build_composite()&lt;br&gt;&lt;br&gt;遍历所有关节 → z-score → 平均" vertex="1">
+          <mxGeometry height="90" width="160" x="460" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_stage1" parent="ga1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1" value="阶段一：滑动窗口&lt;br&gt;best_start()&lt;br&gt;&lt;br&gt;找最优起始帧 (a_off, b_off)" vertex="1">
+          <mxGeometry height="100" width="160" x="280" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_stage2" parent="ga1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1" value="阶段二：DTW 规整&lt;br&gt;dtw_path()&lt;br&gt;&lt;br&gt;得到分段速度归一的路径" vertex="1">
+          <mxGeometry height="100" width="160" x="460" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_map" parent="ga1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="帧映射&lt;br&gt;original_A_frame[k] = a_off + path_i[k]&lt;br&gt;original_B_frame[k] = b_off + path_j[k]" vertex="1">
+          <mxGeometry height="80" width="160" x="260" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_out1" parent="ga1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出：frame_a&lt;br&gt;长度 N_PATH=200&lt;br&gt;每个元素是 hist_a 的帧索引" vertex="1">
+          <mxGeometry height="70" width="160" x="500" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_out2" parent="ga1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出：frame_b&lt;br&gt;长度 N_PATH=200&lt;br&gt;每个元素是 hist_b 的帧索引" vertex="1">
+          <mxGeometry height="70" width="160" x="500" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_e1" edge="1" parent="ga1" source="ga_in1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="ga_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_e2" edge="1" parent="ga1" source="ga_in2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="ga_func">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_e3" edge="1" parent="ga1" source="ga_func" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ga_build">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_e4" edge="1" parent="ga1" source="ga_build" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ga_stage1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_e5" edge="1" parent="ga1" source="ga_stage1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ga_stage2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_e6" edge="1" parent="ga1" source="ga_stage2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ga_map">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_e7" edge="1" parent="ga1" source="ga_map" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ga_out1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_e8" edge="1" parent="ga1" source="ga_map" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ga_out2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ga_note" parent="ga1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" value="&lt;b&gt;说明：&lt;/b&gt;&lt;br&gt;• 作用于骨架帧映射，而非单关节&lt;br&gt;• 合成信号综合所有关节信息&lt;br&gt;• 输出可直接用于骨架对比渲染" vertex="1">
+          <mxGeometry height="60" width="220" x="50" y="330" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="简化使用流程" id="simple_flow">
+    <mxGraphModel dx="1050" dy="819" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="sf0" />
+        <mxCell id="sf1" parent="sf0" />
+        <mxCell id="sf_title" parent="sf1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" value="&lt;b&gt;简化使用流程&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="500" x="110" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_start" parent="sf1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="开始" vertex="1">
+          <mxGeometry height="50" width="120" x="180" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_step1" parent="sf1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="1. 准备视频&lt;br&gt;• 学生动作视频&lt;br&gt;• 参考动作视频" vertex="1">
+          <mxGeometry height="70" width="180" x="380" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_step2" parent="sf1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="2. 姿态估计&lt;br&gt;• 提取学生骨骼序列&lt;br&gt;• 提取参考骨骼序列" vertex="1">
+          <mxGeometry height="70" width="180" x="160" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_step3" parent="sf1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="3. 对比分析&lt;br&gt;• 逐关节对比&lt;br&gt;• 时序对齐分析" vertex="1">
+          <mxGeometry height="70" width="180" x="380" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_step4" parent="sf1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="4. 评分计算&lt;br&gt;• 形态相似度 60%&lt;br&gt;• 时序对齐 30%&lt;br&gt;• 角度偏差 10%" vertex="1">
+          <mxGeometry height="70" width="180" x="160" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_step5" parent="sf1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="5. AI 分析 (可选)&lt;br&gt;• 生成专业建议&lt;br&gt;• 指出改进方向" vertex="1">
+          <mxGeometry height="70" width="180" x="380" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_end" parent="sf1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="输出报告" vertex="1">
+          <mxGeometry height="50" width="120" x="620" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_e1" edge="1" parent="sf1" source="sf_start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sf_step1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_e2" edge="1" parent="sf1" source="sf_step1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sf_step2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_e3" edge="1" parent="sf1" source="sf_step2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sf_step3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_e4" edge="1" parent="sf1" source="sf_step3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sf_step4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_e5" edge="1" parent="sf1" source="sf_step4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sf_step5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_e6" edge="1" parent="sf1" source="sf_step5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="sf_end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sf_note" parent="sf1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" value="&lt;b&gt;说明：&lt;/b&gt;&lt;br&gt;• 步骤 1-4 为必须流程&lt;br&gt;• 步骤 5 可选，需配置 AI 服务&lt;br&gt;• 输出包含详细评分与改进建议" vertex="1">
+          <mxGeometry height="60" width="220" x="30" y="320" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

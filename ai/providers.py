@@ -51,7 +51,7 @@ def call_ai(ts_result: dict, hist_a: list, hist_b: list,
         AI 分析建议字符串
     """
     from .prompts import build_prompt_ts
-    from .app import get_state
+    from web.app import get_state
 
     STATE = get_state()
     provider = STATE.provider
