@@ -1,7 +1,6 @@
 """
-几何计算模块
-
-包含角度计算和 MediaPipe 姿态角度提取函数。
+几何计算模块，
+包含角度计算和 MediaPipe 姿态角度提取函数
 """
 from typing import Dict
 import numpy as np
@@ -11,7 +10,7 @@ from config.constants import MP_JOINT_DEF
 
 def calculate_angle(a, b, c) -> float:
     """
-    计算三个点组成的角度（以度为单位）。
+    计算三个点组成的角度（以度为单位）
 
     Args:
         a: 第一个点的坐标
@@ -30,7 +29,7 @@ def calculate_angle(a, b, c) -> float:
 
 def extract_mp_angles(landmarks, w: int, h: int) -> Dict:
     """
-    从 MediaPipe 关键点中提取各关节角度。
+    从 MediaPipe 关键点中提取各关节角度
 
     Args:
         landmarks: MediaPipe pose landmarks 列表

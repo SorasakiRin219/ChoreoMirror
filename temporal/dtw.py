@@ -1,7 +1,6 @@
 """
 DTW（动态时间规整）算法模块
-
-包含 DTW 路径计算和最优起始点搜索函数。
+包含 DTW 路径计算和最优起始点搜索函数
 """
 from typing import Tuple
 import numpy as np
@@ -10,7 +9,7 @@ import numpy as np
 def dtw_path(a: np.ndarray, b: np.ndarray, band_frac: float = 0.3
              ) -> Tuple[float, np.ndarray, np.ndarray]:
     """
-    完整 DTW：带回溯，输出规整路径。
+    完整 DTW：带回溯，输出规整路径
 
     参数
     ----
@@ -81,7 +80,7 @@ def dtw_path(a: np.ndarray, b: np.ndarray, band_frac: float = 0.3
 def best_start(comp_a: np.ndarray, comp_b: np.ndarray,
                n_pts: int, n_steps: int = 40) -> Tuple[int, int]:
     """
-    阶段一：用合成信号（z-score 均值）的滑动相关找到最优起始帧。
+    阶段一：用合成信号（z-score 均值）的滑动相关找到最优起始帧
 
     穷举两侧各自的起始偏移：
       a_off ∈ [0, na//3]  （A 最多跳过前 1/3）

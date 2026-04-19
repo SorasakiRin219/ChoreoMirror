@@ -1,7 +1,6 @@
 """
-AI 提示词模块
-
-包含构建 AI 分析提示词的函数。
+AI 提示词模块，
+包含构建 AI 分析提示词的函数
 """
 
 
@@ -28,7 +27,7 @@ def build_prompt_ts(ts_result: dict, hist_a: list, hist_b: list,
     n_b = ts_result.get("n_b", 0)
     overall = ts_result.get("overall_score", 0)
 
-    # 从历史时间戳估算录制时长
+    # 估算录制时长（依据历史时间戳
     def dur(hist):
         if len(hist) < 2:
             return "未知"
@@ -47,7 +46,7 @@ def build_prompt_ts(ts_result: dict, hist_a: list, hist_b: list,
         "【各关节对比详情】",
     ]
 
-    # 按评分升序，最差关节排在前面
+    # 按评分升序，越差的排在约前面
     sorted_joints = sorted(joints.items(), key=lambda x: x[1]["score"])
     for k, j in sorted_joints:
         cn = j["cn_name"]
@@ -65,7 +64,7 @@ def build_prompt_ts(ts_result: dict, hist_a: list, hist_b: list,
         if abs(scale - 1.0) > 0.1:
             lines.append(f"  [注] A的动作速度约为B的{round(1/scale, 2)}×（{'较快' if scale < 1 else '较慢'}）")
 
-        # 分段详情，仅输出偏差超过 5° 的时段
+        # 分段详情，只输出偏差超过 5° 的时段
         for seg in j.get("segments", []):
             diff = seg["diff"]
             if abs(diff) < 5:
@@ -95,7 +94,7 @@ def build_prompt_ts(ts_result: dict, hist_a: list, hist_b: list,
 
     lines += [
         "",
-        "请用中文并关闭markdown格式，按以下结构给出专业分析（不超过550字）：",
+        "请使用中文并关闭markdown格式，按以下结构给出专业分析（不超过550字）：",
         "1. 整体动作相似度：结合评分和对齐情况简述两人动作的整体吻合程度",
         "2. 主要差异时段（2-3个关节）：针对上方数据，",
         "   明确指出'在某动作阶段，A的某关节比B偏大/偏小X度'，",

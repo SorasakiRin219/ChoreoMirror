@@ -1,5 +1,5 @@
-# 舞蹈动作解析系统
-# 依赖列表 v1.0
+# 镜影鉴姿Choreomirror
+# 依赖列表 v3.0
 #
 # 安装全部依赖：
 #   pip install -r requirements.txt
@@ -25,7 +25,7 @@ numpy>=1.24
 #中文显示
 Pillow>=9.0
 
-# ── AI 建议功能（强烈推荐，至少安装其中之一） ──────────────────
+# ── AI 建议功能（强烈建议，至少安装其中之一） ──────────────────
 
 # Claude（Anthropic）
 anthropic>=0.25

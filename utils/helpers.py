@@ -1,7 +1,6 @@
 """
-工具模块
-
-包含辅助函数。
+工具模块，
+包含辅助函数
 """
 import webbrowser
 import time

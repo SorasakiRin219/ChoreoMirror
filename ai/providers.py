@@ -1,11 +1,10 @@
 """
-AI 提供商模块
-
-包含调用不同 AI 提供商的函数。
+AI 提供商模块，
+包含调用不同 AI 提供商的函数
 """
 import os
 
-# 可选依赖检测
+# 检测可选的依赖
 HAS_ANTHROPIC = False
 HAS_OPENAI = False
 
@@ -37,8 +36,7 @@ PROVIDER_DEFAULTS = {
 def call_ai(ts_result: dict, hist_a: list, hist_b: list,
             sym_a: dict, sym_b: dict, extra: str = "") -> str:
     """
-    调用 AI 提供商获取舞蹈分析建议。
-
+    调用 AI 提供商获取舞蹈分析建议
     Args:
         ts_result: 时序对比结果
         hist_a: 侧 A 历史数据
@@ -46,7 +44,6 @@ def call_ai(ts_result: dict, hist_a: list, hist_b: list,
         sym_a: 侧 A 对称性分析
         sym_b: 侧 B 对称性分析
         extra: 补充说明
-
     Returns:
         AI 分析建议字符串
     """

@@ -1,7 +1,6 @@
 """
-MJPEG 流处理模块
-
-包含生成 MJPEG 视频流的函数。
+MJPEG 流处理模块，
+包含生成 MJPEG 视频流的函数
 """
 import time
 import cv2
@@ -14,12 +13,10 @@ if TYPE_CHECKING:
 
 def gen_mjpeg_stream(side: "SideState", _lock) -> Generator[bytes, None, None]:
     """
-    生成 MJPEG 视频流。
-
+    生成 MJPEG 视频流
     Args:
         side: 单侧状态对象
         _lock: 全局状态锁
-
     Yields:
         MJPEG 帧数据
     """

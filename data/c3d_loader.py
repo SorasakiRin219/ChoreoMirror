@@ -1,7 +1,6 @@
 """
-C3D 文件加载器
-
-用于加载和解析 C3D 运动捕捉文件格式。
+C3D 文件加载器，
+加载和解析 C3D 运动捕捉文件格式
 """
 from typing import Dict, List
 import numpy as np
@@ -14,14 +13,14 @@ from core.geometry import calculate_angle
 
 class C3DLoader:
     """
-    C3D 运动捕捉文件加载器。
+    C3D 运动捕捉文件加载器
 
-    支持解析 C3D 文件并提取关节角度序列。
+    支持解析 C3D 文件并提取关节角度序列
     """
 
     def __init__(self, path: str, marker_map: Dict = None):
         """
-        初始化 C3D 加载器。
+        初始化 C3D 加载器
 
         Args:
             path: C3D 文件路径
@@ -90,7 +89,7 @@ class C3DLoader:
 
     def get_frame_angles(self, f: int) -> Dict[str, float]:
         """
-        获取指定帧的所有关节角度。
+        获取指定帧的所有关节角度
 
         Args:
             f: 帧索引
@@ -103,7 +102,7 @@ class C3DLoader:
 
     def get_mean_angles(self) -> Dict[str, float]:
         """
-        获取所有关节的平均角度。
+        获取所有关节的平均角度
 
         Returns:
             关节名称到平均角度值的字典
@@ -112,15 +111,14 @@ class C3DLoader:
 
     def render_frame(self, f: int, w: int = 480, h: int = 360, label: str = "C3D") -> np.ndarray:
         """
-        将 C3D 3D 标记点数据渲染为棒状人体角度条形图。
-        使用与整体 UI 风格一致的配色方案。
+        将 C3D 3D 标记点数据渲染为棒状人体角度条形图
+        使用与整体 UI 风格一致的配色方案
 
         Args:
             f: 帧索引
             w: 图像宽度
             h: 图像高度
             label: 标签文本
-
         Returns:
             渲染后的图像
         """
@@ -159,7 +157,7 @@ class C3DLoader:
             cv2.rectangle(canvas, (bar_x, y), (bar_x + bw, y + bh), (59, 41, 30), -1)
             cv2.rectangle(canvas, (bar_x, y), (bar_x + fill, y + bh), color, -1)
 
-        # 转换为 PIL 图像以绘制中文文本
+        # 转换为pil图像绘制中文文本
         pil_img = Image.fromarray(cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB))
         draw = ImageDraw.Draw(pil_img)
 
@@ -215,11 +213,9 @@ class C3DLoader:
 
     def angles_to_mp_format(self, f: int) -> Dict:
         """
-        将角度数据转换为 MediaPipe 格式。
-
+        将角度数据转换为 MediaPipe 格式
         Args:
             f: 帧索引
-
         Returns:
             MediaPipe 格式的角度字典
         """

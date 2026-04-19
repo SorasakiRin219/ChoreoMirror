@@ -1,15 +1,12 @@
 """
-模型配置模块
-
-包含 MediaPipe 模型路径、下载 URL 和模型验证函数。
+模型配置模块，
+包含 MediaPipe 模型路径、下载 URL 和模型验证函数
 """
 import os
 import sys
 import urllib.request
 
-# ══════════════════════════════════════════════════════════════
 #  MediaPipe 模型配置
-# ══════════════════════════════════════════════════════════════
 MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "pose_landmarker_lite.task")
 MODEL_URL = (
     "https://storage.googleapis.com/mediapipe-models/pose_landmarker/"

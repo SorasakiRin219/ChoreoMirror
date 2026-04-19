@@ -1,7 +1,6 @@
 """
-骨架绘制模块
-
-包含骨架绘制、占位图生成和中文文字渲染函数。
+骨架绘制模块,
+骨架绘制、占位图生成和中文文字渲染函数
 """
 from typing import Dict, Optional
 import numpy as np
@@ -23,7 +22,7 @@ GRADE_BGR = {
 def make_placeholder(w: int = 480, h: int = 360, text: str = "等待开始...", side: str = "") -> np.ndarray:
     """
     深海军蓝+紫色占位画布
-    A 侧为天蓝色，B 侧为紫色
+    A 侧天蓝色，B 侧紫色
 
     Args:
         w: 图像宽度
@@ -41,7 +40,7 @@ def make_placeholder(w: int = 480, h: int = 360, text: str = "等待开始...", 
     VIOLET = (250, 139, 167)   # #a78bfa
     accent = VIOLET if is_b else CYAN
 
-    BG_DEEP = (26, 14, 8)      # #080e1a  深海军蓝
+    BG_DEEP = (26, 14, 8)      # #080e1a
     BG_CARD = (53, 22, 13)     # #0d1626
     GRID_CLR = (64, 46, 23)
 
@@ -110,7 +109,7 @@ def make_placeholder(w: int = 480, h: int = 360, text: str = "等待开始...", 
         cv2.circle(img, jp, jr + 2, tuple(int(c * 0.15) for c in accent), -1, cv2.LINE_AA)
         cv2.circle(img, jp, jr, DIM2, -1, cv2.LINE_AA)
 
-    # PIL 绘制中文文字（OpenCV 本地字体支持有限，使用 PIL 绘制后再转换回 OpenCV 格式）
+    # PIL 绘制中文文字（OpenCV不支持中文，使用 PIL 绘制后再转换回 OpenCV 格式）
     pil_img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(pil_img)
 
@@ -230,8 +229,7 @@ def make_placeholder(w: int = 480, h: int = 360, text: str = "等待开始...", 
 
 def draw_skeleton(frame: np.ndarray, landmarks, angles: Dict, comparison: Optional[Dict], w: int, h: int) -> None:
     """
-    绘制骨架和关节角度中文显示。
-
+    绘制骨架和关节角度中文显示
     Args:
         frame: 要绘制的图像帧（会原地修改）
         landmarks: MediaPipe 姿态关键点

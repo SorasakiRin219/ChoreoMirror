@@ -1,7 +1,6 @@
 """
 单侧处理线程模块
-
-包含 SideProcessor 类，用于在后台线程中处理单侧的输入源。
+包含 SideProcessor 类，用于在后台线程中处理单侧的输入源
 """
 import time
 import threading
@@ -26,7 +25,7 @@ if TYPE_CHECKING:
 
 class SideProcessor(threading.Thread):
     """
-    单侧处理线程类。
+    单侧处理线程类
 
     在后台线程中处理摄像头、视频或 C3D 文件输入，
     进行姿态检测并更新状态。

@@ -27,7 +27,6 @@ if [ ! -f "main.py" ]; then
     echo "  static/css/style.css"
     echo "  static/js/app.js"
     echo ""
-    echo "INFO: This project has been refactored to a modular structure."
     echo "Please download the complete project from the repository."
     exit 1
 fi
@@ -37,7 +36,7 @@ pip3 install flask mediapipe opencv-python numpy anthropic openai --quiet
 
 echo ""
 echo "Packages ready. Starting server..."
-echo "This is the modular version (v3.1)"
+echo "This project was designed and implemented by [SorasakiRin219](https://github.com/SorasakiRin219),including algorithm design, core development, and architecture."
 echo "Browser will open at http://127.0.0.1:5000"
 echo "Press Ctrl+C to stop."
 echo ""

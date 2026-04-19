@@ -1,17 +1,16 @@
 """
-对称性分析模块
-
-分析身体左右两侧关节角度的对称性。
+对称性分析模块，
+分析身体左右两侧关节角度的对称性
 """
 from typing import Dict
 
 
 def analyze_symmetry(angles: Dict) -> Dict:
     """
-    分析身体左右两侧关节的对称性。
+    分析身体左右两侧关节的对称性
 
     Args:
-        angles: 关节角度字典，来自 extract_mp_angles
+        angles: 关节角度字典，来自extract_mp_angles
 
     Returns:
         包含各关节对对称性分析的字典：
@@ -45,7 +44,7 @@ def analyze_symmetry(angles: Dict) -> Dict:
                 "left": left_angle,
                 "right": right_angle,
                 "diff": round(diff, 1),
-                "symmetric": diff < 15  # 差异小于15度认为对称
+                "symmetric": diff < 15  # 差异小于15度视为对称
             }
 
     return result

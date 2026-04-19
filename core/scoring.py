@@ -1,14 +1,13 @@
 """
-评分模块
-
-根据偏差值进行评分和等级评定。
+评分模块，
+根据偏差值进行评分和等级评定
 """
 import numpy as np
 
 
 def deviation_grade(d: float) -> str:
     """
-    根据偏差值评定等级。
+    根据偏差值评定等级
 
     Args:
         d: 角度偏差值（度）
@@ -28,10 +27,8 @@ def deviation_grade(d: float) -> str:
 
 def score_from_dev(d: float) -> float:
     """
-    根据偏差值计算评分（0-100）。
-
-    使用指数衰减函数，偏差越小评分越高。
-
+    根据偏差值计算评分（0-100）
+    使用指数衰减函数，偏差越小评分越高
     Args:
         d: 角度偏差值（度）
 

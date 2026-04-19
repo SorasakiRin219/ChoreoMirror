@@ -1,7 +1,6 @@
 """
-移动端摄像头单帧处理模块
-
-处理从前端 WebRTC 推流过来的单帧图像，进行姿态检测并更新状态。
+移动端摄像头单帧处理模块（待优化）（移动端推流实际上现在用不了）
+处理从前端 WebRTC 推流过来的单帧图像，进行姿态检测并更新状态
 """
 import time
 import threading
@@ -39,7 +38,7 @@ def _get_detector():
 
 def process_mobile_frame(side, frame_bgr: np.ndarray, global_lock, which: str):
     """
-    处理移动端传来的单帧图像并更新 side 状态。
+    处理移动端传来的单帧图像并更新 side 状态
 
     Args:
         side: SideState 实例

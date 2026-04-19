@@ -1,7 +1,6 @@
 """
 时序对比模块
-
-包含时序数据对比分析的主函数。
+包含时序数据对比分析的主函数
 """
 from typing import Dict, List
 import numpy as np
@@ -13,7 +12,7 @@ from .alignment import best_align_joint, segment_diff
 
 def compare_timeseries(hist_a: list, hist_b: list) -> Dict:
     """
-    两阶段时序对比（滑窗起始点 + DTW 分段速度归一）。
+    两阶段时序对比（滑窗起始点 + DTW 分段速度归一）
 
     每个关节：
       1. best_align_joint()：找起始点 → DTW 路径 → 对齐序列
@@ -57,8 +56,8 @@ def compare_timeseries(hist_a: list, hist_b: list) -> Dict:
                 region_rs[region].append(r)
                 break
 
-        # 新权重公式：相关性60% | DTW 30% | RMSD 10%
-        # 显著提高形态相似度权重，弱化绝对角度误差惩罚
+        # 权重公式：相关性60% | DTW 30% | RMSD 10%
+        # 提高形态相似度权重，弱化角度绝对值误差惩罚
         r_score = 50.0 * (r + 1.0)                          # 0-100
         dtw_score = 100.0 * float(np.exp(-dtw_d / 0.8))       # 0-100
         rmsd_score = 100.0 * float(np.exp(-rmsd / 25.0))       # 0-100

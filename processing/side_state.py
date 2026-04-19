@@ -1,7 +1,6 @@
 """
 单侧状态模块
-
-包含 SideState 类，用于管理单侧的运行状态和数据。
+包含 SideState 类，用于管理单侧的运行状态和数据
 """
 from typing import Dict, Optional
 from collections import deque
@@ -14,7 +13,7 @@ from pose.rendering import make_placeholder
 
 class SideState:
     """
-    单侧状态管理类。
+    单侧状态管理类
 
     管理单个侧（A 或 B）的所有状态信息，包括输入源、
     角度数据、对称性分析、历史记录等。
@@ -53,7 +52,7 @@ class SideState:
 
     def to_dict(self) -> Dict:
         """
-        将状态转换为字典格式。
+        将状态转换为字典格式
 
         Returns:
             包含所有状态信息的字典

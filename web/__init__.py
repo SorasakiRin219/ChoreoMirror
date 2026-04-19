@@ -1,7 +1,6 @@
 """
-Web 模块
-
-包含 Flask 应用、API 路由和 MJPEG 流处理。
+Web 模块，
+包含 Flask 应用、API 路由和 MJPEG 流处理
 """
 
 from .app import create_app

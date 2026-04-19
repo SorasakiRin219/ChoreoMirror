@@ -1,7 +1,6 @@
 """
-全局应用状态模块
-
-包含 AppState 类，用于管理全局应用状态。
+全局应用状态模块，
+包含 AppState 类，用于管理全局应用状态
 """
 import os
 import threading
@@ -14,9 +13,8 @@ from .side_processor import SideProcessor
 
 class AppState:
     """
-    全局应用状态管理类。
-
-    管理两侧（A/B）的状态、AI 设置、对比结果等全局信息。
+    全局应用状态管理类
+    管理两侧（A/B）的状态、AI 设置、对比结果等全局信息
     """
 
     def __init__(self):
@@ -47,7 +45,7 @@ class AppState:
 
     def snapshot(self) -> Dict:
         """
-        获取当前状态快照。
+        当前状态快照
 
         Returns:
             包含两侧状态、对比结果和配置的字典
@@ -71,7 +69,7 @@ class AppState:
 
     def start_side(self, which: str):
         """
-        启动指定侧的处理线程。
+        启动指定侧的处理线程
 
         Args:
             which: 侧标识（"a" 或 "b"）
@@ -103,7 +101,7 @@ class AppState:
 
     def load_data(self, which: str):
         """
-        装载数据槽：清空历史、标记已装载，准备接收分析数据。
+        装载数据槽：清空历史、标记已装载，准备接收分析数据
 
         Args:
             which: 侧标识（"a" 或 "b"）
@@ -127,7 +125,7 @@ class AppState:
 
     def unload_data(self, which: str):
         """
-        卸载数据槽：停止分析（如在运行）并清空历史。
+        卸载数据槽：停止分析（如在运行）并清空历史
 
         Args:
             which: 侧标识（"a" 或 "b"）
@@ -146,7 +144,7 @@ class AppState:
 
     def stop_side(self, which: str):
         """
-        停止指定侧的处理线程。
+        停止指定侧的处理线程
 
         Args:
             which: 侧标识（"a" 或 "b"）

@@ -1,22 +1,17 @@
 """
-常量定义模块
-
+常量定义模块，
 包含 MediaPipe 骨架连接线、关节定义、C3D 标记点映射等常量。
 """
 from typing import Dict, Tuple
 
-# ══════════════════════════════════════════════════════════════
 #  MediaPipe 骨架连接线定义
-# ══════════════════════════════════════════════════════════════
 POSE_CONNECTIONS = [
     (11, 13), (13, 15), (15, 17), (15, 19), (17, 19), (12, 14), (14, 16), (16, 18), (16, 20), (18, 20),
     (11, 12), (11, 23), (12, 24), (23, 24), (23, 25), (25, 27), (27, 29), (27, 31), (29, 31),
     (24, 26), (26, 28), (28, 30), (28, 32), (30, 32),
 ]
 
-# ══════════════════════════════════════════════════════════════
 #  MediaPipe 关节定义
-# ══════════════════════════════════════════════════════════════
 MP_JOINT_DEF: Dict[str, Tuple] = {
     "left_elbow":     (11, 13, 15, "左肘"),   "right_elbow":    (12, 14, 16, "右肘"),
     "left_shoulder":  (13, 11, 23, "左肩"),   "right_shoulder": (14, 12, 24, "右肩"),
@@ -26,9 +21,7 @@ MP_JOINT_DEF: Dict[str, Tuple] = {
     "left_wrist":     (13, 15, 17, "左腕"),   "right_wrist":    (14, 16, 18, "右腕"),
 }
 
-# ══════════════════════════════════════════════════════════════
 #  C3D 默认标记点映射（Vicon PiG 格式）
-# ══════════════════════════════════════════════════════════════
 DEFAULT_C3D_MAP: Dict[str, Dict] = {
     "left_elbow":     {"markers": ["LSHO", "LELB", "LWRA"], "cn_name": "左肘"},
     "right_elbow":    {"markers": ["RSHO", "RELB", "RWRA"], "cn_name": "右肘"},
@@ -44,9 +37,7 @@ DEFAULT_C3D_MAP: Dict[str, Dict] = {
     "right_wrist":    {"markers": ["RELB", "RWRA", "RFIN"], "cn_name": "右腕"},
 }
 
-# ══════════════════════════════════════════════════════════════
 #  C3D 预设映射集合
-# ══════════════════════════════════════════════════════════════
 PRESET_MAPS = {
     "vicon_pig": DEFAULT_C3D_MAP,
     "c3d_generic": {
@@ -63,9 +54,7 @@ PRESET_MAPS = {
         "left_wrist":     {"markers": ["L.Elbow", "L.Wrist", "L.Finger"], "cn_name": "左腕"},
         "right_wrist":    {"markers": ["R.Elbow", "R.Wrist", "R.Finger"], "cn_name": "右腕"},
     },
-    # ═══════════════════════════════════════════════════════════
-    #  适配学校实验室自定义标记点命名
-    # ═══════════════════════════════════════════════════════════
+    #  用来适配学校实验室自定义标记点命名
     "custom_mocap": {
         # 肘关节：上臂标记 - 肘外侧 - 腕外侧（计算肘屈伸）
         "left_elbow":     {"markers": ["LArm", "LElbowOut", "LWristOut"], "cn_name": "左肘"},
@@ -75,7 +64,7 @@ PRESET_MAPS = {
         "left_shoulder":  {"markers": ["LElbowOut", "LShoulder", "Chest"], "cn_name": "左肩"},
         "right_shoulder": {"markers": ["RElbowOut", "RShoulder", "Chest"], "cn_name": "右肩"},
 
-        # 髋关节：肩峰 - 髂前上棘(ASIS) - 大腿标记（近似髋部角度）
+        # 髋关节：肩峰 - 髂前上棘 - 大腿标记（近似髋部角度）
         "left_hip":       {"markers": ["LShoulder", "LASIS", "LTHI"], "cn_name": "左髋"},
         "right_hip":      {"markers": ["RShoulder", "RASIS", "RTHI"], "cn_name": "右髋"},
 
@@ -93,9 +82,7 @@ PRESET_MAPS = {
     },
 }
 
-# ══════════════════════════════════════════════════════════════
 #  身体部位分组（用于部位级评分）
-# ══════════════════════════════════════════════════════════════
 BODY_REGIONS = {
     "upper": ["left_elbow", "right_elbow", "left_shoulder", "right_shoulder", "left_wrist", "right_wrist"],
     "core":  ["left_shoulder", "right_shoulder", "left_hip", "right_hip"],

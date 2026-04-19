@@ -1,11 +1,13 @@
 """
-API 路由模块
-
-包含所有 Flask API 路由定义。
+API 路由模块，
+包含所有 Flask API 路由定义
 """
 import os
 import sys
 import time
+"""
+忘了导入这个拿来干嘛的了
+"""
 import tempfile
 import json
 import subprocess
@@ -40,7 +42,7 @@ except ImportError:
 
 def register_routes(app):
     """
-    注册所有 API 路由到 Flask 应用。
+    注册所有 API 路由到 Flask 应用
 
     Args:
         app: Flask 应用实例

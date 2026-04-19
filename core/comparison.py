@@ -1,7 +1,6 @@
 """
-对比分析模块
-
-对比分析两组关节角度的差异。
+对比分析模块，
+对比分析两组关节角度的差异
 """
 from typing import Dict
 import numpy as np
@@ -11,7 +10,7 @@ from .scoring import score_from_dev, deviation_grade
 
 def compare_sides(a_angles: Dict, b_angles: Dict) -> Dict:
     """
-    逐关节比较 A（学生）与 B（参考）的单帧角度差异。
+    逐关节比较 A（学生）与 B（参考）的单帧角度差异
 
     Args:
         a_angles: A 侧关节角度字典

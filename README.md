@@ -2,6 +2,12 @@
 
 基于 MediaPipe + Flask 的双路舞蹈动作实时对比分析工具，支持 AI 姿态评估、C3D 专业动捕数据解析与移动端摄像头推流。
 
+
+本项目由 [SorasakiRin219](https://github.com/SorasakiRin219) 独立设计与实现，
+包括算法设计、核心代码编写及架构规划
+This project was designed and implemented by [SorasakiRin219](https://github.com/SorasakiRin219),
+including algorithm design, core development, and architecture.
+
 ![Python](https://img.shields.io/badge/Python-3.9+-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.0+-green)
 ![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10+-orange)

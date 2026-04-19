@@ -1,7 +1,6 @@
 """
-Flask 应用初始化模块
-
-创建并配置 Flask 应用实例。
+Flask 应用初始化模块，
+创建和配置 Flask 应用实例
 """
 import os
 from flask import Flask
@@ -23,7 +22,7 @@ def get_state():
 
 def create_app() -> Flask:
     """
-    创建并配置 Flask 应用。
+    创建并配置 Flask 应用
 
     Returns:
         配置好的 Flask 应用实例

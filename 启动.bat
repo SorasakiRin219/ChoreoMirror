@@ -51,7 +51,6 @@ if not exist "main.py" (
     echo    static\css\style.css
     echo    static\js\app.js
     echo.
-    echo  [INFO] This project has been refactored to a modular structure.
     echo  Please download the complete project from the repository.
     echo.
     pause
@@ -90,7 +89,7 @@ echo  [6/6] openai OK
 echo.
 echo  [OK] All packages ready.
 echo  [OK] Starting server...
-echo  [INFO] This is the modular version (v3.1)
+echo  [INFO] This project was designed and implemented by [SorasakiRin219](https://github.com/SorasakiRin219),including algorithm design, core development, and architecture.
 echo.
 echo  Browser will open at: http://127.0.0.1:5000
 echo  Press Ctrl+C or close this window to stop.

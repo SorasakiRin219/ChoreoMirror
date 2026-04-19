@@ -1,7 +1,6 @@
 """
 对齐算法模块
-
-包含单关节对齐、全局对齐和分段差异计算函数。
+包含单关节对齐、全局对齐和分段差异计算函数
 """
 from typing import List
 import numpy as np
@@ -25,7 +24,7 @@ def best_align_joint(a_raw: np.ndarray, b_raw: np.ndarray,
       阶段二：DTW 规整路径沿路径采样，得到真正分段速度归一的对齐序列
 
     a_aligned / b_aligned 是沿 DTW 路径采样的角度序列：
-    a_aligned[k] 和 b_aligned[k] 对应动作的"同一时刻"。
+    a_aligned[k] 和 b_aligned[k] 对应动作的"同一时刻"
     """
     na, nb = len(a_raw), len(b_raw)
 
@@ -77,7 +76,7 @@ def composite_global_align(hist_a: list, hist_b: list,
       阶段一：滑动窗口找最优 (a_off, b_off) 起始帧
       阶段二：DTW 规整路径给出分段速度归一的 (path_i, path_j)
 
-    path_i[k] 是 A 在对齐段内的帧偏移，path_j[k] 对应 B 的帧偏移。
+    path_i[k] 是 A 在对齐段内的帧偏移，path_j[k] 对应 B 的帧偏移
     骨架映射：
       original_A_frame[k] = a_off + path_i[k]  (映射回 hist_a 索引)
       original_B_frame[k] = b_off + path_j[k]  (映射回 hist_b 索引)
